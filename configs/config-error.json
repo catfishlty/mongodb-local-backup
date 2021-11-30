@@ -1,0 +1,13 @@
+{
+  "Mongo": "C:\\Program Files\\MongoDB\\Tools\\100\\bin\\mongoexport.exe",
+  "Host": "127.0.0.1",
+  "Port": 27017,
+  "Days": 5,
+  "Username": null,
+  "Password": null,
+  "Db": "test",
+  "Collection": "test",
+  "Type": "json",
+  "Output": "E:\\test\\mongo t\\dwadwad?://",
+  "Cron": "1-2 0 * * * ?"
+}

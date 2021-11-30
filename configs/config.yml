@@ -1,0 +1,14 @@
+Mongo: C:\\Program Files\\MongoDB\\Tools\\100\\bin\\mongoexport.exe
+Days: 7
+Host: 127.0.0.1
+Port: 27017
+target:
+  -
+    db: test
+    collection:
+      - test
+      - test1
+Prefix: "mongodb-local-backup-yml"
+Type: json
+Output: "E:\\test\\mongo t\\"
+Cron: test
