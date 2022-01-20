@@ -1,4 +1,6 @@
 # MongoDB Local Backup
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcatfishlty%2Fmongodb-local-backup.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcatfishlty%2Fmongodb-local-backup?ref=badge_shield)
+
 A tool can back up your MongoDB data in Local File system.
 
 ## Usage
@@ -145,3 +147,7 @@ A few months before, the data in MongoDB Standalone is broken by the hard disk f
 7. [github.com/gorhill/cronexpr](https://github.com/gorhill/cronexpr) GPL v3/APL v2
 8. [github.com/sirupsen/logrus](https://github.com/sirupsen/logrus) MIT Licence
 9. [github.com/valyala/fasttemplate](https://github.com/valyala/fasttemplate) MIT Licence
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcatfishlty%2Fmongodb-local-backup.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcatfishlty%2Fmongodb-local-backup?ref=badge_large)
