@@ -4,7 +4,7 @@ const (
 	// Name define app name
 	Name = "mongodb-local-backup"
 	// Version define app version
-	Version = "0.3.0"
+	Version = "0.4.0"
 	// BackupFileName define backup temp file name
 	BackupFileName = "mongo_backup_temp"
 	// TagCmd define variable for parse data in golang tags
