@@ -1,11 +1,12 @@
 # MongoDB Local Backup
-![github action](https://github.com/catfishlty/mongodb-local-backup/actions/workflows/weekly.yml/badge.svg)
+![github action](https://github.com/catfishlty/mongodb-local-backup/actions/workflows/weekly.yml/badge.svg?branch=master)
 
 [![Mongo DB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white&text=MongoDB)](https://docs.mongodb.com/database-tools/mongoexport/)
 
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 ![MacOS X](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=apple&logoColor=white)
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
+
 A tool can back up your MongoDB data in Local File system.
 
 ## Usage
