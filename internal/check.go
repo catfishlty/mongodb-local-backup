@@ -61,7 +61,7 @@ func ValidCronExpression(value interface{}) error {
 	}
 	fields := strings.Split(s, " ")
 	if len(fields) != 5 {
-		return errors.New(fmt.Sprintf("fields must 5, not %d", len(fields)))
+		return fmt.Errorf("fields must 5, not %d", len(fields))
 	}
 	return nil
 }
@@ -96,14 +96,14 @@ func ValidTarget(value interface{}) error {
 	for i := 0; i < len(targets); i++ {
 		target := targets[i]
 		if target.Db == "" {
-			return errors.New(fmt.Sprintf("db[%d] must not be empty", i))
+			return fmt.Errorf("db[%d] must not be empty", i)
 		}
 		if target.Collection == nil || len(target.Collection) <= 0 {
-			return errors.New(fmt.Sprintf("db[%d] collection must not be nil and greater than 0", i))
+			return fmt.Errorf("db[%d] collection must not be nil and greater than 0", i)
 		}
 		for j := 0; j < len(target.Collection); j++ {
 			if target.Collection[j] == "" {
-				return errors.New(fmt.Sprintf("db[%d].collection[%d] must not be empty", i, j))
+				return fmt.Errorf("db[%d].collection[%d] must not be empty", i, j)
 			}
 		}
 	}
