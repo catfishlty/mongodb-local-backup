@@ -16,19 +16,22 @@ import (
 	"time"
 )
 
-func GetTempFile(format string) string {
+// GenTempFile generate temp file path
+func GenTempFile(format string) string {
 	return fmt.Sprintf("%s%s.%s", TempDir, BackupFileName, format)
 }
 
+// Version get the full version string
 func (*Args) Version() string {
 	return fmt.Sprintf("%s-%s-%s", Name, Version, runtime.GOOS)
 }
 
+// Run execute app with the config once
 func Run(conf *Config) error {
 	successList := make([]string, 0)
 	failList := make([]string, 0)
 	mongoSplitIdx := strings.LastIndex(conf.Mongo, string(os.PathSeparator))
-	tempFile := GetTempFile(conf.Type)
+	tempFile := GenTempFile(conf.Type)
 	targets := conf.Target
 	args := getArgs(conf)
 	for i := 0; i < len(targets); i++ {
@@ -68,6 +71,7 @@ func Run(conf *Config) error {
 	return nil
 }
 
+// RunInDaemon execute app with the config by cron, and stop until shutdown the app
 func RunInDaemon(conf *Config) error {
 	initLogger(getLogPath(conf.Log))
 	s := gocron.NewScheduler(time.Now().Location())

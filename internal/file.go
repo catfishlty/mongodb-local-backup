@@ -9,6 +9,7 @@ import (
 	"os"
 )
 
+// Exist check if the given path is exists of file or directory
 func Exist(path string) bool {
 	_, err := os.Stat(path)
 	if err != nil {
@@ -17,6 +18,7 @@ func Exist(path string) bool {
 	return true
 }
 
+// IsDir check if the given path is a directory or not
 func IsDir(path string) bool {
 	s, err := os.Stat(path)
 	if err != nil {
@@ -25,14 +27,17 @@ func IsDir(path string) bool {
 	return s.IsDir()
 }
 
+// Mkdir create a new directory from the given path
 func Mkdir(path string) error {
 	return os.MkdirAll(path, 0777)
 }
 
+// IsFile check if the given path is a file or not
 func IsFile(path string) bool {
 	return !IsDir(path)
 }
 
+// FileTrans move file form `sourcePath` to `targetPath`
 func FileTrans(sourcePath, targetPath string) error {
 	b, err := ioutil.ReadFile(sourcePath)
 	if err != nil {
@@ -49,6 +54,7 @@ func FileTrans(sourcePath, targetPath string) error {
 	return nil
 }
 
+// ReadConfig read config file from given path and file format, support `json`, `yaml` and `toml`
 func ReadConfig(file, format string) (*Config, error) {
 	b, err := ioutil.ReadFile(file)
 	if err != nil {

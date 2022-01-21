@@ -11,6 +11,7 @@ import (
 	"strings"
 )
 
+// CheckArgs check arguments are valid or not
 func CheckArgs(args Args) error {
 	m := map[string]bool{
 		"json": true,
@@ -26,6 +27,7 @@ func CheckArgs(args Args) error {
 	return nil
 }
 
+// ValidFilePath custom validator to validate filepath for ozzo-validation
 func ValidFilePath(value interface{}) error {
 	s, ok := value.(string)
 	if !ok {
@@ -47,6 +49,7 @@ func ValidFilePath(value interface{}) error {
 	return errors.New("must be a valid " + osType + " file path")
 }
 
+// ValidCronExpression custom validator to validate cron expression for ozzo-validation
 func ValidCronExpression(value interface{}) error {
 	s, ok := value.(string)
 	if !ok {
@@ -63,6 +66,7 @@ func ValidCronExpression(value interface{}) error {
 	return nil
 }
 
+// ValidDir custom validator to validate directory path for ozzo-validation
 func ValidDir(value interface{}) error {
 	s, ok := value.(string)
 	if !ok {
@@ -80,6 +84,7 @@ func ValidDir(value interface{}) error {
 	return nil
 }
 
+// ValidTarget custom validator to validate export db&collection in MongoDB for ozzo-validation
 func ValidTarget(value interface{}) error {
 	targets, ok := value.([]MongoTarget)
 	if !ok {
@@ -105,6 +110,7 @@ func ValidTarget(value interface{}) error {
 	return nil
 }
 
+// CheckConfig call to validate all fields by ozzo-validation
 func CheckConfig(conf *Config, cron bool) error {
 	validList := make([]*validation.FieldRules, 0)
 	validList = append(validList, validation.Field(&conf.Mongo, validation.Required, validation.By(ValidFilePath)))

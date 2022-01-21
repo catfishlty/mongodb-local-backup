@@ -1,27 +1,35 @@
 package internal
 
 const (
-	Name           = "mongodb-local-backup"
-	Version        = "0.3.0"
+	// Name define app name
+	Name = "mongodb-local-backup"
+	// Version define app version
+	Version = "0.3.0"
+	// BackupFileName define backup temp file name
 	BackupFileName = "mongo_backup_temp"
-	TagCmd         = "cmd"
+	// TagCmd define variable for parse data in golang tags
+	TagCmd = "cmd"
 )
 
+// BaseCmd base command struct
 type BaseCmd struct {
 	Config string `arg:"-c,--config,required" help:"config file"`
 	Format string `arg:"-f,--format,required" help:"config file format(json, yaml, toml)"`
 	Daemon bool   `arg:"-d,--daemon" help:"non stop running"`
 }
 
+// Args all commands struct
 type Args struct {
 	StartCmd *BaseCmd `arg:"subcommand:start" help:"start application"`
 }
 
+// MongoTarget command options for target MongoDB db name and collection name
 type MongoTarget struct {
 	Db         string   `json:"db,omitempty" yaml:"db,omitempty" cmd:"db" help:"mongodb db"`
 	Collection []string `json:"collection,omitempty" yaml:"collection,omitempty" cmd:"collection" help:"mongodb collection"`
 }
 
+// Config config file struct
 type Config struct {
 	Mongo    string        `json:"mongo,omitempty" yaml:"mongo,omitempty" help:"path of mongoexport program"`
 	Host     string        `json:"host,omitempty" yaml:"host,omitempty" cmd:"host" help:"mongodb host"`
