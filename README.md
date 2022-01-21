@@ -1,10 +1,13 @@
 # MongoDB Local Backup
 
+
+
+[![Download](https://img.shields.io/github/downloads/catfishlty/mongodb-local-backup/latest/total)](https://github.com/catfishlty/mongodb-local-backup/releases/latest)
+
 [![Go Reference](https://pkg.go.dev/badge/github.com/catfishlty/mongodb-local-backup.svg)](https://pkg.go.dev/github.com/catfishlty/mongodb-local-backup)
 ![github action](https://github.com/catfishlty/mongodb-local-backup/actions/workflows/weekly.yml/badge.svg?branch=master)
 
 [![Mongo DB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white&text=MongoDB)](https://docs.mongodb.com/database-tools/mongoexport/)
-
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 ![MacOS X](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=apple&logoColor=white)
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
