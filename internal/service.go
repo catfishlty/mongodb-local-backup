@@ -6,7 +6,6 @@ import (
     "github.com/commander-cli/cmd"
     "github.com/go-co-op/gocron"
     log "github.com/sirupsen/logrus"
-    "github.com/valyala/fasttemplate"
     "gopl.io/ch12/format"
     "os"
     "os/signal"
@@ -28,7 +27,7 @@ func (*Args) Version() string {
 func Run(conf *Config) error {
     successList := make([]string, 0)
     failList := make([]string, 0)
-    mongoSplitIdx := strings.LastIndex(conf.Mongo, "\\")
+    mongoSplitIdx := strings.LastIndex(conf.Mongo, string(os.PathSeparator))
     tempFile := GetTempFile(conf.Type)
     targets := conf.Target
     args := getArgs(conf)
@@ -40,9 +39,14 @@ func Run(conf *Config) error {
             tempArgs = targetInject(tempArgs, db, collection)
             c := cmd.NewCommand(fmt.Sprintf("%s %s", conf.Mongo[mongoSplitIdx+1:], strings.Join(tempArgs, " ")), cmd.WithWorkingDir(conf.Mongo[:mongoSplitIdx]), cmd.WithEnvironmentVariables(cmd.EnvVars{"encoding": "utf-8"}))
             log.Debugf("mongo command: %s", c.Command)
-            _ = c.Execute()
+            err := c.Execute()
+            if err != nil {
+                log.Errorf("mongo command execute error: %v", err)
+                failList = append(failList, fmt.Sprintf("%s:%s", db, collection))
+                continue
+            }
             log.Debugf("mongo response: %s", ConvertByteToString([]byte(c.Combined()), GB18030))
-            err := FileTrans(tempFile, conf.Output+GetBackupFilename(conf.Prefix, db, collection, conf.Type))
+            err = FileTrans(tempFile, conf.Output+GetBackupFilename(conf.Prefix, db, collection, conf.Type))
             if err != nil {
                 log.Errorf("file trans error: %v", err)
                 failList = append(failList, fmt.Sprintf("%s:%s", db, collection))
@@ -51,18 +55,15 @@ func Run(conf *Config) error {
             successList = append(successList, fmt.Sprintf("%s:%s", db, collection))
         }
     }
-    if len(successList) != len(successList)+len(failList) {
-        return errors.New(fasttemplate.ExecuteString(`export err {current}/{total}`, "{", "}", map[string]interface{}{
-            "current": len(successList),
-            "total":   len(successList) + len(failList),
-        }))
-    }
     log.Infof("export success %d/%d", len(successList), len(successList)+len(failList))
     if len(successList) > 0 {
         log.Infof("success: [%s]", strings.Join(successList, ", "))
     }
     if len(failList) > 0 {
         log.Infof("fail: [%s]", strings.Join(failList, ", "))
+    }
+    if len(successList) != len(successList)+len(failList) {
+        return errors.New(fmt.Sprintf("export err %d/%d", len(successList), len(successList)+len(failList)))
     }
     return nil
 }
@@ -92,8 +93,8 @@ func RunInDaemon(conf *Config) error {
 }
 
 func targetInject(args []string, db string, collection string) []string {
-    args = append(args, fasttemplate.ExecuteString(`--db {val}`, "{", "}", map[string]interface{}{"val": db}))
-    args = append(args, fasttemplate.ExecuteString(`--collection {val}`, "{", "}", map[string]interface{}{"val": collection}))
+    args = append(args, fmt.Sprintf("--db %s", db))
+    args = append(args, fmt.Sprintf("--collection %s", collection))
     return args
 }
 
@@ -122,11 +123,7 @@ func getAnnotation(e interface{}, exec func(tag, val string)) {
 }
 
 func formatCmd(tag, val string) string {
-    return fasttemplate.ExecuteString(`--{tag} {val}`, "{", "}",
-        map[string]interface{}{
-            "tag": tag,
-            "val": val,
-        })
+    return fmt.Sprintf("--%s %s", tag, val)
 }
 
 func GetBackupFilename(prefix, db, collection, postfix string) string {
@@ -136,14 +133,7 @@ func GetBackupFilename(prefix, db, collection, postfix string) string {
     } else {
         p = "mongodb-local-backup"
     }
-    t := fasttemplate.New(`{prefix}-{db}-{collection}-{time}.{postfix}`, "{", "}")
-    return t.ExecuteString(map[string]interface{}{
-        "prefix":     p,
-        "db":         db,
-        "collection": collection,
-        "time":       time.Now().Format("20060102150405999-07MST"),
-        "postfix":    postfix,
-    })
+    return fmt.Sprintf("%s-%s-%s-%s.%s", p, db, collection, time.Now().Format("20060102150405999-07MST"), postfix)
 }
 
 func getLogPath(logPath string) string {

@@ -12,10 +12,7 @@ import (
 func Exist(path string) bool {
     _, err := os.Stat(path)
     if err != nil {
-        if os.IsExist(err) {
-            return true
-        }
-        return false
+        return os.IsExist(err)
     }
     return true
 }
@@ -59,16 +56,16 @@ func ReadConfig(file, format string) (*Config, error) {
     }
     switch format {
     case "json":
-        return readJson(b)
+        return ReadJson(b)
     case "yaml":
-        return readYaml(b)
+        return ReadYaml(b)
     case "toml":
-        return readToml(b)
+        return ReadToml(b)
     }
     return nil, errors.New("unsupported config file format")
 }
 
-func readJson(b []byte) (*Config, error) {
+func ReadJson(b []byte) (*Config, error) {
     var config Config
     err := json.Unmarshal(b, &config)
     if err != nil {
@@ -77,7 +74,7 @@ func readJson(b []byte) (*Config, error) {
     return &config, nil
 }
 
-func readYaml(b []byte) (*Config, error) {
+func ReadYaml(b []byte) (*Config, error) {
     var config Config
     err := yaml.Unmarshal(b, &config)
     if err != nil {
@@ -86,7 +83,7 @@ func readYaml(b []byte) (*Config, error) {
     return &config, nil
 }
 
-func readToml(b []byte) (*Config, error) {
+func ReadToml(b []byte) (*Config, error) {
     var config Config
     err := toml.Unmarshal(b, &config)
     if err != nil {

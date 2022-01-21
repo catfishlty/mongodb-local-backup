@@ -131,7 +131,7 @@ Aim to send message to IM software such as `Telegram`,`Bark`, `WXWorks`, `DingTa
 ## Contribution
 If you have some great ideas, plz submit issue and let me know :D
 
-Wecome to PR~
+Welcome to PR~
 
 ## Background
 Why did I design this tool?
@@ -146,8 +146,8 @@ A few months before, the data in MongoDB Standalone is broken by the hard disk f
 6. [github.com/go-ozzo/ozzo-validation/v4](https://github.com/go-ozzo/ozzo-validation) MIT Licence
 7. [github.com/gorhill/cronexpr](https://github.com/gorhill/cronexpr) GPL v3/APL v2
 8. [github.com/sirupsen/logrus](https://github.com/sirupsen/logrus) MIT Licence
-9. [github.com/valyala/fasttemplate](https://github.com/valyala/fasttemplate) MIT Licence
-
+9. [github.com/smartystreets/goconvey/convey](https://github.com/smartystreets/goconvey) [Licence](https://github.com/smartystreets/goconvey/blob/master/LICENSE.md)
+10. [github.com/agiledragon/gomonkey](https://github.com/agiledragon/gomonkey) MIT Licence
 
 ## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcatfishlty%2Fmongodb-local-backup.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcatfishlty%2Fmongodb-local-backup?ref=badge_large)

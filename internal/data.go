@@ -2,7 +2,7 @@ package internal
 
 const (
     Name           = "mongodb-local-backup"
-    Version        = "0.2.0"
+    Version        = "0.3.0"
     BackupFileName = "mongo_backup_temp"
     TagCmd         = "cmd"
 )
@@ -24,7 +24,6 @@ type MongoTarget struct {
 
 type Config struct {
     Mongo    string        `json:"mongo,omitempty" yaml:"mongo,omitempty" help:"path of mongoexport program"`
-    Days     int           `json:"days,omitempty" yaml:"days,omitempty" help:"the days backup files keeps, 0 is do not delete old files"`
     Host     string        `json:"host,omitempty" yaml:"host,omitempty" cmd:"host" help:"mongodb host"`
     Port     int           `json:"port,omitempty" yaml:"port,omitempty" cmd:"port" help:"mongodb port"`
     Username string        `json:"username,omitempty" yaml:"username,omitempty" cmd:"username" help:"mongodb username"`

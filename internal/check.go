@@ -7,7 +7,6 @@ import (
     validation "github.com/go-ozzo/ozzo-validation/v4"
     "github.com/go-ozzo/ozzo-validation/v4/is"
     "github.com/gorhill/cronexpr"
-    "github.com/valyala/fasttemplate"
     "regexp"
     "strings"
 )
@@ -27,7 +26,7 @@ func CheckArgs(args Args) error {
     return nil
 }
 
-func validFilePath(value interface{}) error {
+func ValidFilePath(value interface{}) error {
     s, ok := value.(string)
     if !ok {
         return errors.New("must be a valid file path")
@@ -48,7 +47,7 @@ func validFilePath(value interface{}) error {
     return errors.New("must be a valid " + osType + " file path")
 }
 
-func validCronExpression(value interface{}) error {
+func ValidCronExpression(value interface{}) error {
     s, ok := value.(string)
     if !ok {
         return errors.New("must be a valid cron expression")
@@ -64,7 +63,7 @@ func validCronExpression(value interface{}) error {
     return nil
 }
 
-func validDir(value interface{}) error {
+func ValidDir(value interface{}) error {
     s, ok := value.(string)
     if !ok {
         return errors.New("must be a valid dir path")
@@ -81,7 +80,7 @@ func validDir(value interface{}) error {
     return nil
 }
 
-func validTarget(value interface{}) error {
+func ValidTarget(value interface{}) error {
     targets, ok := value.([]MongoTarget)
     if !ok {
         return errors.New("must be target list")
@@ -92,23 +91,14 @@ func validTarget(value interface{}) error {
     for i := 0; i < len(targets); i++ {
         target := targets[i]
         if target.Db == "" {
-            return errors.New(fasttemplate.ExecuteString(
-                `db[{index}] must not be empty`, "{", "}",
-                map[string]interface{}{"index": i},
-            ))
+            return errors.New(fmt.Sprintf("db[%d] must not be empty", i))
         }
-        if len(target.Collection) <= 0 {
-            return errors.New(fasttemplate.ExecuteString(
-                `db[{index}] collection must greater than 0`, "{", "}",
-                map[string]interface{}{"index": i},
-            ))
+        if target.Collection == nil || len(target.Collection) <= 0 {
+            return errors.New(fmt.Sprintf("db[%d] collection must not be nil and greater than 0", i))
         }
         for j := 0; j < len(target.Collection); j++ {
             if target.Collection[j] == "" {
-                return errors.New(fasttemplate.ExecuteString(
-                    `db[{db}].collection[{col}] must not be empty`, "{", "}",
-                    map[string]interface{}{"db": i, "col": j},
-                ))
+                return errors.New(fmt.Sprintf("db[%d].collection[%d] must not be empty", i, j))
             }
         }
     }
@@ -117,16 +107,15 @@ func validTarget(value interface{}) error {
 
 func CheckConfig(conf *Config, cron bool) error {
     validList := make([]*validation.FieldRules, 0)
-    validList = append(validList, validation.Field(&conf.Mongo, validation.Required, validation.By(validFilePath)))
-    validList = append(validList, validation.Field(&conf.Days, validation.When(conf.Days >= 0)))
+    validList = append(validList, validation.Field(&conf.Mongo, validation.Required, validation.By(ValidFilePath)))
     validList = append(validList, validation.Field(&conf.Host, validation.Required, is.Host))
     validList = append(validList, validation.Field(&conf.Port, validation.Required, validation.When(conf.Port > 0 && conf.Port < 65536)))
-    validList = append(validList, validation.Field(&conf.Target, validation.Required, validation.By(validTarget)))
+    validList = append(validList, validation.Field(&conf.Target, validation.Required, validation.By(ValidTarget)))
     validList = append(validList, validation.Field(&conf.Type, validation.Required, validation.In("json", "csv")))
-    validList = append(validList, validation.Field(&conf.Output, validation.Required, validation.By(validFilePath), validation.By(validDir)))
+    validList = append(validList, validation.Field(&conf.Output, validation.Required, validation.By(ValidFilePath), validation.By(ValidDir)))
     if cron {
-        validList = append(validList, validation.Field(&conf.Cron, validation.Required, validation.By(validCronExpression)))
+        validList = append(validList, validation.Field(&conf.Cron, validation.Required, validation.By(ValidCronExpression)))
     }
-    validList = append(validList, validation.Field(&conf.Prefix, validation.Match(regexp.MustCompile("[a-zA-Z0-9_-]+")).Error("the prefix must be characters")))
+    validList = append(validList, validation.Field(&conf.Prefix, validation.Match(regexp.MustCompile("[a-zA-Z0-9_-]+")).Error("the prefix must be character in 'a-zA-Z0-9_-'")))
     return validation.ValidateStruct(conf, validList...)
 }
