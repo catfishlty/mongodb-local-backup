@@ -1,5 +1,5 @@
 # MongoDB Local Backup
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcatfishlty%2Fmongodb-local-backup.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcatfishlty%2Fmongodb-local-backup?ref=badge_shield)
+![github action](https://github.com/catfishlty/mongodb-local-backup/actions/workflows/go.yml/badge.svg)[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcatfishlty%2Fmongodb-local-backup.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcatfishlty%2Fmongodb-local-backup?ref=badge_shield)
 
 A tool can back up your MongoDB data in Local File system.
 
