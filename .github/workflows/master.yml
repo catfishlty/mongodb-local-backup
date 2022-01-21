@@ -6,30 +6,16 @@ on:
 
 jobs:
   test:
-    name: Test on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        go_version: [ 1.17 ]
-        os: [ ubuntu-latest, windows-latest, macOS-latest ]
+    name: Test 
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: ${{ matrix.go_version }}
+          go-version: 1.17.3
 
       - name: Build
         run: go build -v ./...
 
-      - name: Test
-        run: go test -v $(go list ./... | grep -v /test$| grep -v /cmd/mlb$) -gcflags=all=-l
-
       - uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-          files: ./coverage1.xml,./coverage2.xml # optional
-          flags: unittests # optional
-          name: codecov-umbrella # optional
-          fail_ci_if_error: true # optional (default = false)
-          verbose: true # optional (default = false)
