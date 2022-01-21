@@ -1,8 +1,8 @@
 name: Github Actions
 
 on:
-  schedule:
-    - cron: "0 2 * * 1-5"
+  pull_request:
+    branches: [ master ]
 
 jobs:
   test:
@@ -14,7 +14,6 @@ jobs:
         os: [ ubuntu-latest, windows-latest, macOS-latest ]
     steps:
       - uses: actions/checkout@v2
-
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
