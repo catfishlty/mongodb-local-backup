@@ -1,4 +1,4 @@
-module mongodb-local-backup
+module github.com/catfishlty/mongodb-local-backup
 
 go 1.17
 

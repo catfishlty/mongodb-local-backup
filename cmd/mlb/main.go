@@ -2,8 +2,8 @@ package main
 
 import (
     "github.com/alexflint/go-arg"
+    "github.com/catfishlty/mongodb-local-backup/internal"
     log "github.com/sirupsen/logrus"
-    "mongodb-local-backup/internal"
 )
 
 func main() {
