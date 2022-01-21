@@ -53,13 +53,13 @@ func TestGetBackupFilename(t *testing.T) {
 	postfix := "post"
 	Convey("TestGetBackupFilename", t, func() {
 		Convey("test1", func() {
-			s := GetBackupFilename(prefix, db, collection, postfix)
+			s := GenBackupFilename(prefix, db, collection, postfix)
 			So(strings.Index(s, prefix), ShouldEqual, 0)
 			So(strings.Index(s, fmt.Sprintf("%s-%s-%s-", prefix, db, collection)), ShouldEqual, 0)
 			So(strings.Index(s, postfix)+len(postfix), ShouldEqual, len(s))
 		})
 		Convey("test2", func() {
-			s := GetBackupFilename("", db, collection, postfix)
+			s := GenBackupFilename("", db, collection, postfix)
 			So(strings.Index(s, prefixDefault), ShouldEqual, 0)
 			So(strings.Index(s, fmt.Sprintf("%s-%s-%s-", prefixDefault, db, collection)), ShouldEqual, 0)
 			So(strings.Index(s, postfix)+len(postfix), ShouldEqual, len(s))
