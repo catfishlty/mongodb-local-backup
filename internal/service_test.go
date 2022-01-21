@@ -6,8 +6,12 @@ import (
     "github.com/agiledragon/gomonkey/v2/test/fake"
     "github.com/commander-cli/cmd"
     "github.com/go-co-op/gocron"
+    log "github.com/sirupsen/logrus"
     . "github.com/smartystreets/goconvey/convey"
+    "io"
+    "io/fs"
     "mongodb-local-backup/test"
+    "os"
     "reflect"
     "runtime"
     "strings"
@@ -140,11 +144,29 @@ func TestRunInDaemon(t *testing.T) {
     s := &gocron.Scheduler{}
     Convey("TestRunInDaemon", t, func() {
         Convey("test1", func() {
-            patches := ApplyMethod(reflect.TypeOf(s), "Do", func(*gocron.Scheduler, interface{}, ...interface{}) (*gocron.Job, error) {
+            patches :=
+                ApplyFunc(os.OpenFile, func(string, int, fs.FileMode) (*os.File, error) {
+                    return nil, nil
+                })
+            patches.ApplyFunc(log.SetOutput, func(io.Writer) {})
+            patches.ApplyMethod(reflect.TypeOf(s), "Do", func(*gocron.Scheduler, interface{}, ...interface{}) (*gocron.Job, error) {
                 return nil, fake.ErrActual
             })
             defer patches.Reset()
             err := RunInDaemon(conf)
+            So(err, ShouldEqual, fake.ErrActual)
+        })
+        Convey("test2", func() {
+            confDup := getConfig()
+            confDup.Log = ""
+            patches := ApplyFunc(os.OpenFile, func(string, int, fs.FileMode) (*os.File, error) {
+                return nil, fake.ErrActual
+            })
+            patches.ApplyMethod(reflect.TypeOf(s), "Do", func(*gocron.Scheduler, interface{}, ...interface{}) (*gocron.Job, error) {
+                return nil, fake.ErrActual
+            })
+            defer patches.Reset()
+            err := RunInDaemon(confDup)
             So(err, ShouldEqual, fake.ErrActual)
         })
     })

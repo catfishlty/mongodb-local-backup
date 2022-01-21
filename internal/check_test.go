@@ -3,6 +3,8 @@ package internal
 import (
     "errors"
     . "github.com/agiledragon/gomonkey/v2"
+    "github.com/agiledragon/gomonkey/v2/test/fake"
+    validation "github.com/go-ozzo/ozzo-validation/v4"
     . "github.com/smartystreets/goconvey/convey"
     "testing"
 )
@@ -194,7 +196,29 @@ func TestCheckConfig(t *testing.T) {
         Log:    "/root/logs",
     }
     Convey("TestCheckConfig", t, func() {
-        So(CheckConfig(conf, false), ShouldBeNil)
-        So(CheckConfig(conf, true), ShouldBeNil)
+        Convey("test1", func() {
+            patches := ApplyFunc(Mkdir, func(string) error {
+                return nil
+            })
+            patches.ApplyFunc(validation.ValidateStruct, func(interface{}, ...*validation.FieldRules) error {
+                return nil
+            })
+            defer patches.Reset()
+            So(CheckConfig(conf, false), ShouldBeNil)
+            So(CheckConfig(conf, true), ShouldBeNil)
+        })
+        Convey("test2", func() {
+            patches := ApplyFunc(Mkdir, func(string) error {
+                return nil
+            })
+            patches.ApplyFunc(validation.ValidateStruct, func(interface{}, ...*validation.FieldRules) error {
+                return fake.ErrActual
+            })
+            defer patches.Reset()
+            So(CheckConfig(conf, false), ShouldBeError)
+            So(CheckConfig(conf, false), ShouldEqual, fake.ErrActual)
+            So(CheckConfig(conf, true), ShouldBeError)
+            So(CheckConfig(conf, true), ShouldEqual, fake.ErrActual)
+        })
     })
 }
