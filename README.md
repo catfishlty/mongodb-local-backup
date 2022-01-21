@@ -1,5 +1,6 @@
 # MongoDB Local Backup
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/catfishlty/mongodb-local-backup.svg)](https://pkg.go.dev/github.com/catfishlty/mongodb-local-backup)
 ![github action](https://github.com/catfishlty/mongodb-local-backup/actions/workflows/weekly.yml/badge.svg?branch=master)
 
 [![Mongo DB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white&text=MongoDB)](https://docs.mongodb.com/database-tools/mongoexport/)
