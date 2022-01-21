@@ -1,4 +1,5 @@
 # MongoDB Local Backup
+
 ![github action](https://github.com/catfishlty/mongodb-local-backup/actions/workflows/weekly.yml/badge.svg?branch=master)
 
 [![Mongo DB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white&text=MongoDB)](https://docs.mongodb.com/database-tools/mongoexport/)
@@ -10,29 +11,31 @@
 A tool can back up your MongoDB data in Local File system.
 
 ## Usage
+
 ### 1. define config file
+
 #### 1.1 config file type
-`MLB` support 3 types of config files, they're `json`, `toml` and `yaml`.
-And here're the example of the config files: [json](), [toml](), [yaml]()
+
+`MLB` support 3 types of config files, they're `json`, `toml` and `yaml`. And here're the example of the config
+files: [json](), [toml](), [yaml]()
 
 #### 1.2 config file have several fields
-| key | value | required | description |
-| --- | :-- | :--: | :-- |
-| mongo | C:\Program Files\MongoDB\Tools\100\bin\mongoexport.exe | Y | specific 'mongoexport' path |
-| host | 127.0.0.1 | Y | MongoDB service host |
-| port | 127.0.0.1 | Y | MongoDB service port |
-| username | test | N | MongoDB service username for authentication, use with password, unset or set to null means no authentication |
-| password | test | N | MongoDB service password for authentication, use with username, unset or set to null means no authentication
-| target | 'must be an array' | Y | define which db and collection to export |
-| db | 'must be an object' | Y | define which db to export |
-| collection | 'must be an array' | Y | define which collections in this db to export |
-| prefix | mongodb-local-backup | N | define the prefix of the exported data file names |
-| type | json/csv | Y | define the export data file format |
-| output | E:\mongo_backup\ | Y | define the directory where store the export data files.
-| cron | */1 * * * * | N | define when run the export task, it will work only with command include '-d' option.| 
+
+| key | value | required | description | | --- | :-- | :--: | :-- | | mongo | C:\Program
+Files\MongoDB\Tools\100\bin\mongoexport.exe | Y | specific 'mongoexport' path | | host | 127.0.0.1 | Y | MongoDB service
+host | | port | 127.0.0.1 | Y | MongoDB service port | | username | test | N | MongoDB service username for
+authentication, use with password, unset or set to null means no authentication | | password | test | N | MongoDB
+service password for authentication, use with username, unset or set to null means no authentication | target | 'must be
+an array' | Y | define which db and collection to export | | db | 'must be an object' | Y | define which db to export |
+| collection | 'must be an array' | Y | define which collections in this db to export | | prefix | mongodb-local-backup
+| N | define the prefix of the exported data file names | | type | json/csv | Y | define the export data file format | |
+output | E:\mongo_backup\ | Y | define the directory where store the export data files. | cron | */1 * * * * | N |
+define when run the export task, it will work only with command include '-d' option.|
 
 #### 1.3 config file example
+
 [config.json]()
+
 ```json
 {
   "mongo": "C:\\Program Files\\MongoDB\\Tools\\100\\bin\\mongoexport.exe",
@@ -57,6 +60,7 @@ And here're the example of the config files: [json](), [toml](), [yaml]()
 ```
 
 [config.toml]()
+
 ```toml
 # Define the path of mongoexport executable
 mongo = "C:\\Program Files\\MongoDB\\Tools\\100\\bin\\mongoexport.exe"
@@ -81,6 +85,7 @@ collection = ["test", "test1"]
 ```
 
 [config.yaml]()
+
 ```yaml
 mongo: C:\\Program Files\\MongoDB\\Tools\\100\\bin\\mongoexport.exe
 host: 127.0.0.1
@@ -98,7 +103,9 @@ Cron: '*/1 * * * *'
 ```
 
 ### 2. Run command
+
 #### 2.1 Run in Windows
+
 ```cmd
 # one time
 ./mlb.exe -c config.json -f json
@@ -112,7 +119,9 @@ Cron: '*/1 * * * *'
 ./mlb.exe -c config.yml -f yaml -d
 ./mlb.exe -c config.yaml -f yaml -d
 ```
+
 #### 2.2 Run in Linux/Darwin
+
 ```bash
 # one time
 mlb -c config.json -f json
@@ -128,22 +137,30 @@ mlb -c config.yaml -f yaml -d
 ```
 
 ## Feature plans
+
 ### 1. Service
-The service is about the `Service` in `Windows`, `Linux` and `MacOS`. With the `Service`, `mlb` can run in background and do the backup tasks automatically.
+
+The service is about the `Service` in `Windows`, `Linux` and `MacOS`. With the `Service`, `mlb` can run in background
+and do the backup tasks automatically.
 
 ### 2. Notification
+
 Aim to send message to IM software such as `Telegram`,`Bark`, `WXWorks`, `DingTalk` and so on.
 
 ## Contribution
+
 If you have some great ideas, plz submit issue and let me know :D
 
 Welcome to PR~
 
 ## Background
-Why did I design this tool?
-A few months before, the data in MongoDB Standalone is broken by the hard disk failure, so I lost my data and can't not backup. So if you want to keep your data safe, it's better to use MongoDB ReplicaSet or backup more often.
+
+Why did I design this tool? A few months before, the data in MongoDB Standalone is broken by the hard disk failure, so I
+lost my data and can't not backup. So if you want to keep your data safe, it's better to use MongoDB ReplicaSet or
+backup more often.
 
 ## Thanks
+
 1. [github.com/BurntSushi/toml](https://github.com/BurntSushi/toml) MIT Licence
 2. [github.com/alexflint/go-arg](https://github.com/alexflint/go-arg) BSD-2-Clause License
 3. [github.com/asaskevich/govalidator](https://github.com/asaskevich/govalidator) MIT Licence
@@ -154,6 +171,3 @@ A few months before, the data in MongoDB Standalone is broken by the hard disk f
 8. [github.com/sirupsen/logrus](https://github.com/sirupsen/logrus) MIT Licence
 9. [github.com/smartystreets/goconvey/convey](https://github.com/smartystreets/goconvey) [Licence](https://github.com/smartystreets/goconvey/blob/master/LICENSE.md)
 10. [github.com/agiledragon/gomonkey](https://github.com/agiledragon/gomonkey) MIT Licence
-
-## License
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcatfishlty%2Fmongodb-local-backup.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcatfishlty%2Fmongodb-local-backup?ref=badge_large)

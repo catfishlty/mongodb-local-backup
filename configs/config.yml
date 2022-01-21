@@ -3,8 +3,7 @@ Days: 7
 Host: 127.0.0.1
 Port: 27017
 target:
-  -
-    db: test
+  - db: test
     collection:
       - test
       - test1

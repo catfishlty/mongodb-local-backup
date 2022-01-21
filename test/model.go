@@ -1,8 +1,8 @@
 package test
 
 import (
-    "io/fs"
-    "time"
+	"io/fs"
+	"time"
 )
 
 type MockFileInfo struct {
@@ -12,25 +12,25 @@ const mockFileInfoName = "mockFileInfoName"
 const mockFileInfoSize = 0
 
 func (MockFileInfo) Name() string {
-    return mockFileInfoName
+	return mockFileInfoName
 }
 
 func (MockFileInfo) Size() int64 {
-    return mockFileInfoSize
+	return mockFileInfoSize
 }
 
 func (MockFileInfo) Mode() fs.FileMode {
-    return fs.ModeDir
+	return fs.ModeDir
 }
 
 func (MockFileInfo) ModTime() time.Time {
-    return time.Now()
+	return time.Now()
 }
 
 func (MockFileInfo) IsDir() bool {
-    return true
+	return true
 }
 
 func (MockFileInfo) Sys() interface{} {
-    return mockFileInfoName
+	return mockFileInfoName
 }
