@@ -1,7 +1,7 @@
 # MongoDB Local Backup
 
 
-
+[![Release](https://img.shields.io/github/v/release/catfishlty/mongodb-local-backup)](https://github.com/catfishlty/mongodb-local-backup/releases/latest)
 [![Download](https://img.shields.io/github/downloads/catfishlty/mongodb-local-backup/latest/total)](https://github.com/catfishlty/mongodb-local-backup/releases/latest)
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/catfishlty/mongodb-local-backup.svg)](https://pkg.go.dev/github.com/catfishlty/mongodb-local-backup)
@@ -25,16 +25,20 @@ files: [json](), [toml](), [yaml]()
 
 #### 1.2 config file have several fields
 
-| key | value | required | description | | --- | :-- | :--: | :-- | | mongo | C:\Program
-Files\MongoDB\Tools\100\bin\mongoexport.exe | Y | specific 'mongoexport' path | | host | 127.0.0.1 | Y | MongoDB service
-host | | port | 127.0.0.1 | Y | MongoDB service port | | username | test | N | MongoDB service username for
-authentication, use with password, unset or set to null means no authentication | | password | test | N | MongoDB
-service password for authentication, use with username, unset or set to null means no authentication | target | 'must be
-an array' | Y | define which db and collection to export | | db | 'must be an object' | Y | define which db to export |
-| collection | 'must be an array' | Y | define which collections in this db to export | | prefix | mongodb-local-backup
-| N | define the prefix of the exported data file names | | type | json/csv | Y | define the export data file format | |
-output | E:\mongo_backup\ | Y | define the directory where store the export data files. | cron | */1 * * * * | N |
-define when run the export task, it will work only with command include '-d' option.|
+| key | value | required | description |
+| --- | :-- | :--: | :-- |
+| mongo | C:\Program Files\MongoDB\Tools\100\bin\mongoexport.exe | Y | specific 'mongoexport' path |
+| host | 127.0.0.1 | Y | MongoDB service host |
+| port | 127.0.0.1 | Y | MongoDB service port |
+| username | test | N | MongoDB service username for authentication, use with password, unset or set to null means no authentication |
+| password | test | N | MongoDBservice password for authentication, use with username, unset or set to null means no authentication |
+| target | 'must bean array' | Y | define which db and collection to export |
+| db | 'must be an object' | Y | define which db to export |
+| collection | 'must be an array' | Y | define which collections in this db to export |
+| prefix | mongodb-local-backup | N | define the prefix of the exported data file names |
+| type | json/csv | Y | define the export data file format |
+| output | E:\mongo_backup\ | Y | define the directory where store the export data files. |
+| cron | */1 * * * * | N | define when run the export task, it will work only with command include '-d' option.|
 
 #### 1.3 config file example
 
