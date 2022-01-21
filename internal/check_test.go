@@ -194,6 +194,10 @@ func TestCheckConfig(t *testing.T) {
         Log:    "/root/logs",
     }
     Convey("TestCheckConfig", t, func() {
+        patches := ApplyFunc(Mkdir, func(string) error {
+            return nil
+        })
+        defer patches.Reset()
         So(CheckConfig(conf, false), ShouldBeNil)
         So(CheckConfig(conf, true), ShouldBeNil)
     })
