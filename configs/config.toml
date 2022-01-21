@@ -1,0 +1,20 @@
+# Define the path of mongoexport executable
+mongo = "C:\\Program Files\\MongoDB\\Tools\\100\\bin\\mongoexport.exe"
+# MongoDB host
+host = "127.0.0.1"
+# MongoDB port
+port = 27017
+# username of MongoDB connection
+# username =
+# password of MongoDB connection
+# password =
+# prefix is the prefix of exported data file name.
+prefix = "mongodb-local-backup-toml"
+#
+type = "json"
+output = "E:\\mongo_backup\\"
+cron = "*/1 * * * *"
+# define the MongoDB db and collections in target, mlb can do the backup for multiple dbs and collections.
+[[target]]
+db = "test"
+collection = ["test", "test1"]

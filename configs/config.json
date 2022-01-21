@@ -1,0 +1,20 @@
+{
+  "mongo": "C:\\Program Files\\MongoDB\\Tools\\100\\bin\\mongoexport.exe",
+  "host": "127.0.0.1",
+  "port": 27017,
+  "username": null,
+  "password": null,
+  "target": [
+    {
+      "db": "test",
+      "collection": [
+        "test",
+        "test1"
+      ]
+    }
+  ],
+  "Prefix": "mongodb-local-backup-json",
+  "Type": "json",
+  "Output": "E:\\mongo_backup\\",
+  "Cron": "*/1 * * * *"
+}
