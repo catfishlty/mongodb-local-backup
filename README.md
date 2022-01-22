@@ -6,6 +6,8 @@
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/catfishlty/mongodb-local-backup.svg)](https://pkg.go.dev/github.com/catfishlty/mongodb-local-backup)
 [![Github Actions](https://github.com/catfishlty/mongodb-local-backup/actions/workflows/master.yml/badge.svg?branch=develop)](https://github.com/catfishlty/mongodb-local-backup/actions/workflows/master.yml)
+[![codecov](https://codecov.io/gh/catfishlty/mongodb-local-backup/branch/develop/graph/badge.svg?token=79I70TJ9SF)](https://codecov.io/gh/catfishlty/mongodb-local-backup)
+[![Go Report Card](https://goreportcard.com/badge/github.com/catfishlty/mongodb-local-backup)](https://goreportcard.com/report/github.com/catfishlty/mongodb-local-backup)
 
 [![Mongo DB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white&text=MongoDB)](https://docs.mongodb.com/database-tools/mongoexport/)
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
