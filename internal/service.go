@@ -1,7 +1,6 @@
 package internal
 
 import (
-	"errors"
 	"fmt"
 	"github.com/commander-cli/cmd"
 	"github.com/go-co-op/gocron"
@@ -49,7 +48,7 @@ func Run(conf *Config) error {
 				continue
 			}
 			log.Debugf("mongo response: %s", ConvertByteToString([]byte(c.Combined()), GB18030))
-			err = FileTrans(tempFile, conf.Output+GetBackupFilename(conf.Prefix, db, collection, conf.Type))
+			err = FileTrans(tempFile, conf.Output+GenBackupFilename(conf.Prefix, db, collection, conf.Type))
 			if err != nil {
 				log.Errorf("file trans error: %v", err)
 				failList = append(failList, fmt.Sprintf("%s:%s", db, collection))
@@ -66,7 +65,7 @@ func Run(conf *Config) error {
 		log.Infof("fail: [%s]", strings.Join(failList, ", "))
 	}
 	if len(successList) != len(successList)+len(failList) {
-		return errors.New(fmt.Sprintf("export err %d/%d", len(successList), len(successList)+len(failList)))
+		return fmt.Errorf("export err %d/%d", len(successList), len(successList)+len(failList))
 	}
 	return nil
 }
@@ -130,7 +129,8 @@ func formatCmd(tag, val string) string {
 	return fmt.Sprintf("--%s %s", tag, val)
 }
 
-func GetBackupFilename(prefix, db, collection, postfix string) string {
+// GenBackupFilename generate backup file name
+func GenBackupFilename(prefix, db, collection, postfix string) string {
 	var p string
 	if prefix != "" {
 		p = prefix
