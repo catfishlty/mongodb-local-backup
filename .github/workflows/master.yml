@@ -17,5 +17,11 @@ jobs:
 
       - name: Build
         run: go build -v ./...
+      
+      - name: Test
+        run: go test -v $(go list ./... | grep -v /test$| grep -v /cmd/mlb$) -gcflags=all=-l -coverprofile=coverage.txt -covermode=atomic
 
-      - uses: codecov/codecov-action@v2
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v2
+        with:
+          file: ./coverage.txt
