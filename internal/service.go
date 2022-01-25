@@ -20,7 +20,7 @@ func GenTempFile(format string) string {
 	return fmt.Sprintf("%s%s.%s", TempDir, BackupFileName, format)
 }
 
-// Version get the full version string
+// Version gets the full version string
 func (*Args) Version() string {
 	return fmt.Sprintf("%s-%s-%s", Name, Version, runtime.GOOS)
 }
@@ -42,8 +42,16 @@ func Run(conf *Config) error {
 			c := cmd.NewCommand(fmt.Sprintf("%s %s", conf.Mongo[mongoSplitIdx+1:], strings.Join(tempArgs, " ")), cmd.WithWorkingDir(conf.Mongo[:mongoSplitIdx]), cmd.WithEnvironmentVariables(cmd.EnvVars{"encoding": "utf-8"}))
 			log.Debugf("mongo command: %s", c.Command)
 			err := c.Execute()
-			if err != nil {
-				log.Errorf("mongo command execute error: %v", err)
+			if err != nil || c.ExitCode() != 0 {
+				errMsg := ""
+				if err != nil {
+					errMsg += err.Error()
+				}
+				if errMsg != "" {
+					errMsg += " | "
+				}
+				errMsg += c.Combined()
+				log.Errorf("mongo command execute error: %s", errMsg)
 				failList = append(failList, fmt.Sprintf("%s:%s", db, collection))
 				continue
 			}
