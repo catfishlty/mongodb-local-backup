@@ -8,13 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        os: [ linux, windows, darwin ]
-        arch: [ amd64, 386, arm, arm64 ]
-        exclude:
-          - os: windows
-            arch: [ arm, arm64 ]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -22,11 +15,44 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.17
-      - name: Build
-        run: CGO_ENABLED=0 GOOS=${{ matrix.os }} GOARCH=${{ matrix.arch }}
+      - name: Build linux-arm
+        run: GOOS=linux GOARCH=arm go build -o mlb-linux-arm cmd/mlb/main.go
+      - name: Build linux-arm64
+        run: GOOS=linux GOARCH=arm64 go build -o mlb-linux-arm64 cmd/mlb/main.go
+      - name: Build linux-386
+        run: GOOS=linux GOARCH=386 go build -o mlb-linux-386 cmd/mlb/main.go
+      - name: Build linux-amd64
+        run: GOOS=linux GOARCH=amd64 go build -o mlb-linux-amd64 cmd/mlb/main.go
+      - name: Build darwin-arm64
+        run: GOOS=darwin GOARCH=arm64 go build -o mlb-darwin-arm64 cmd/mlb/main.go
+      - name: Build darwin-amd64
+        run: GOOS=darwin GOARCH=amd64 go build -o mlb-darwin-amd64 cmd/mlb/main.go
+      - name: Build windows-arm
+        run: GOOS=windows GOARCH=arm go build -o mlb-windows-arm.exe cmd/mlb/main.go
+      - name: Build darwin-arm64
+        run: GOOS=windows GOARCH=arm64 go build -o mlb-windows-arm64.exe cmd/mlb/main.go
+      - name: Build windows-386
+        run: GOOS=windows GOARCH=386 go build -o mlb-windows-386.exe cmd/mlb/main.go
+      - name: Build windows-amd64
+        run: GOOS=windows GOARCH=amd64 go build -o mlb-windows-amd64.exe cmd/mlb/main.go
+      - name: List
+        run: ls -al
+
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          body_path: |
-            CHANGELOG.txt
+          prerelease: true
+          files: |
+            mlb-linux-arm
+            mlb-linux-arm64
+            mlb-linux-386
+            mlb-linux-amd64
+            mlb-darwin-arm64
+            mlb-darwin-amd64
+            mlb-windows-arm.exe
+            mlb-windows-arm64.exe
+            mlb-windows-386.exe
+            mlb-windows-amd64.exe
+            LICENSE
+          body_path: CHANGELOG.txt
