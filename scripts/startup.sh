@@ -1,3 +1,3 @@
-@echo off
+#!/bin/bash
 # configuration file format can be 'json', 'yaml' or 'toml'
-.\mlb.exe start -c config.json -f json -d
+mlb start -c config.json -f json -d

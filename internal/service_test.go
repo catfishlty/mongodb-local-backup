@@ -103,6 +103,11 @@ func TestRun(t *testing.T) {
 				{Values: Params{fake.ErrActual}},
 				{Values: Params{nil}},
 			})
+			patches.ApplyMethodSeq(reflect.TypeOf(command), "ExitCode", []OutputCell{
+				{Values: Params{0}},
+				{Values: Params{0}},
+				{Values: Params{2}},
+			})
 			patches.ApplyMethod(reflect.TypeOf(command), "Combined", func(*cmd.Command) string {
 				return "test"
 			})
@@ -124,6 +129,9 @@ func TestRun(t *testing.T) {
 			})
 			patches.ApplyMethod(reflect.TypeOf(command), "Execute", func(*cmd.Command) error {
 				return nil
+			})
+			patches.ApplyMethod(reflect.TypeOf(command), "ExitCode", func(*cmd.Command) int {
+				return 0
 			})
 			patches.ApplyMethod(reflect.TypeOf(command), "Combined", func(*cmd.Command) string {
 				return "test"
