@@ -13,8 +13,8 @@
       ]
     }
   ],
-  "Prefix": "mongodb-local-backup-json",
-  "Type": "json",
-  "Output": "E:\\mongo_backup\\",
-  "Cron": "*/1 * * * *"
+  "prefix": "mongodb-local-backup-json",
+  "type": "json",
+  "output": "E:\\mongo_backup\\",
+  "cron": "*/1 * * * *"
 }

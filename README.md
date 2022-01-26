@@ -62,10 +62,10 @@ files: [json](), [toml](), [yaml]()
       ]
     }
   ],
-  "Prefix": "mongodb-local-backup-json",
-  "Type": "json",
-  "Output": "E:\\mongo_backup\\",
-  "Cron": "*/1 * * * *"
+  "prefix": "mongodb-local-backup-json",
+  "type": "json",
+  "output": "E:\\mongo_backup\\",
+  "cron": "*/1 * * * *"
 }
 ```
 
@@ -106,10 +106,10 @@ target:
     collection:
       - test
       - test1
-Prefix: "mongodb-local-backup-yaml"
-Type: json
-Output: "E:\\mongo_backup\\"
-Cron: '*/1 * * * *'
+prefix: "mongodb-local-backup-yaml"
+type: json
+output: "E:\\mongo_backup\\"
+cron: '*/1 * * * *'
 ```
 
 ### 2. Run command
