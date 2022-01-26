@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - "v*.*.*"
+      - "v*.*.*-pre"
 
 jobs:
   build:
@@ -42,7 +42,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          prerelease: false
+          prerelease: true
           files: |
             mlb-linux-arm
             mlb-linux-arm64
