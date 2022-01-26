@@ -1,4 +1,4 @@
-name: Release
+name: Release-Pre
 
 on:
   push:
@@ -15,44 +15,74 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.17
+
       - name: Build linux-arm
         run: GOOS=linux GOARCH=arm go build -o mlb-linux-arm cmd/mlb/main.go
+      - name: Compress & Package linux-arm
+        run: tar -czvf mlb-linux-arm.tar.gz mlb-linux-arm
+
       - name: Build linux-arm64
         run: GOOS=linux GOARCH=arm64 go build -o mlb-linux-arm64 cmd/mlb/main.go
+      - name: Compress & Package linux-arm64
+        run: tar -czvf mlb-linux-arm64.tar.gz mlb-linux-arm64
+
       - name: Build linux-386
         run: GOOS=linux GOARCH=386 go build -o mlb-linux-386 cmd/mlb/main.go
+      - name: Compress & Package linux-386
+        run: tar -czvf mlb-linux-386.tar.gz mlb-linux-386
+
       - name: Build linux-amd64
         run: GOOS=linux GOARCH=amd64 go build -o mlb-linux-amd64 cmd/mlb/main.go
+      - name: Compress & Package linux-amd64
+        run: tar -czvf mlb-linux-amd64.tar.gz mlb-linux-amd64
+
       - name: Build darwin-arm64
         run: GOOS=darwin GOARCH=arm64 go build -o mlb-darwin-arm64 cmd/mlb/main.go
+      - name: Compress & Package darwin-arm64
+        run: tar -czvf mlb-darwin-arm64.tar.gz mlb-darwin-arm64
+
       - name: Build darwin-amd64
         run: GOOS=darwin GOARCH=amd64 go build -o mlb-darwin-amd64 cmd/mlb/main.go
+      - name: Compress & Package darwin-amd64
+        run: tar -czvf mlb-darwin-amd64.tar.gz mlb-darwin-amd64
+
       - name: Build windows-arm
         run: GOOS=windows GOARCH=arm go build -o mlb-windows-arm.exe cmd/mlb/main.go
-      - name: Build darwin-arm64
+      - name: Compress & Package windows-arm
+        run: zip mlb-windows-arm.zip mlb-windows-arm.exe
+
+      - name: Build windows-arm64
         run: GOOS=windows GOARCH=arm64 go build -o mlb-windows-arm64.exe cmd/mlb/main.go
+      - name: Compress & Package windows-arm64
+        run: zip mlb-windows-arm64.zip mlb-windows-arm64.exe
+
       - name: Build windows-386
         run: GOOS=windows GOARCH=386 go build -o mlb-windows-386.exe cmd/mlb/main.go
+      - name: Compress & Package windows-386
+        run: zip mlb-windows-386.zip mlb-windows-386.exe
+
       - name: Build windows-amd64
         run: GOOS=windows GOARCH=amd64 go build -o mlb-windows-amd64.exe cmd/mlb/main.go
+      - name: Compress & Package windows-amd64
+        run: zip mlb-windows-amd64.zip mlb-windows-amd64.exe
+
       - name: List
         run: ls -al
-
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           prerelease: true
           files: |
-            mlb-linux-arm
-            mlb-linux-arm64
-            mlb-linux-386
-            mlb-linux-amd64
-            mlb-darwin-arm64
-            mlb-darwin-amd64
-            mlb-windows-arm.exe
-            mlb-windows-arm64.exe
-            mlb-windows-386.exe
-            mlb-windows-amd64.exe
+            mlb-linux-arm.tar.gz
+            mlb-linux-arm64.tar.gz
+            mlb-linux-386.tar.gz
+            mlb-linux-amd64.tar.gz
+            mlb-darwin-arm64.tar.gz
+            mlb-darwin-amd64.tar.gz
+            mlb-windows-arm.zip
+            mlb-windows-arm64.zip
+            mlb-windows-386.zip
+            mlb-windows-amd64.zip
             LICENSE
           body_path: CHANGELOG.txt
