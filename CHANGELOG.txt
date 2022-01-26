@@ -1,7 +1,1 @@
-1. fix document[EN]
-2. Github Actions
-3. CircleCI
-4. CodeCov
-5. Goreport
-6. fix command execute error handle logic
-7. auto release workflow
+1. zip release package
