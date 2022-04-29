@@ -31,7 +31,7 @@ files: [json](), [toml](), [yaml]()
 | --- | :-- | :--: | :-- |
 | mongo | C:\Program Files\MongoDB\Tools\100\bin\mongoexport.exe | Y | specific 'mongoexport' path |
 | host | 127.0.0.1 | Y | MongoDB service host |
-| port | 127.0.0.1 | Y | MongoDB service port |
+| port | 27017 | Y | MongoDB service port |
 | username | test | N | MongoDB service username for authentication, use with password, unset or set to null means no authentication |
 | password | test | N | MongoDBservice password for authentication, use with username, unset or set to null means no authentication |
 | target | 'must bean array' | Y | define which db and collection to export |
@@ -62,10 +62,10 @@ files: [json](), [toml](), [yaml]()
       ]
     }
   ],
-  "Prefix": "mongodb-local-backup-json",
-  "Type": "json",
-  "Output": "E:\\mongo_backup\\",
-  "Cron": "*/1 * * * *"
+  "prefix": "mongodb-local-backup-json",
+  "type": "json",
+  "output": "E:\\mongo_backup\\",
+  "cron": "*/1 * * * *"
 }
 ```
 
@@ -106,10 +106,10 @@ target:
     collection:
       - test
       - test1
-Prefix: "mongodb-local-backup-yaml"
-Type: json
-Output: "E:\\mongo_backup\\"
-Cron: '*/1 * * * *'
+prefix: "mongodb-local-backup-yaml"
+type: json
+output: "E:\\mongo_backup\\"
+cron: '*/1 * * * *'
 ```
 
 ### 2. Run command
