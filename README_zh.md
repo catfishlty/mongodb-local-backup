@@ -14,35 +14,35 @@
 ![MacOS X](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=apple&logoColor=white)
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 
-A tool can back up your MongoDB data in Local File system.
+一款易用的MongoDB本地备份工具。
 
-## Usage
+## 使用指南
 
-### 1. define config file
+### 1. 配置文件
 
-#### 1.1 config file type
+#### 1.1 配置文件格式
 
-`MLB` support 3 types of config files, they're `json`, `toml` and `yaml`. And here're the example of the config
-files: [json](#config_json), [toml](#config_toml), [yaml](#config_yaml)
+`MLB` 支持 `json`, `toml` and `yaml` 3 种格式的配置文件
+示例文件: [json](#config_json), [toml](#config_toml), [yaml](#config_yaml)
 
-#### 1.2 config file have several fields
+#### 1.2 配置文件字段解析
 
 | key | value | required | description |
 | --- | :-- | :--: | :-- |
-| mongo | C:\Program Files\MongoDB\Tools\100\bin\mongoexport.exe | Y | specific 'mongoexport' path |
-| host | 127.0.0.1 | Y | MongoDB service host |
-| port | 27017 | Y | MongoDB service port |
-| username | test | N | MongoDB service username for authentication, use with password, unset or set to null means no authentication |
-| password | test | N | MongoDBservice password for authentication, use with username, unset or set to null means no authentication |
-| target | 'must bean array' | Y | define which db and collection to export |
-| db | 'must be an object' | Y | define which db to export |
-| collection | 'must be an array' | Y | define which collections in this db to export |
-| prefix | mongodb-local-backup | N | define the prefix of the exported data file names |
-| type | json/csv | Y | define the export data file format |
-| output | E:\mongo_backup\ | Y | define the directory where store the export data files. |
-| cron | */1 * * * * | N | define when run the export task, it will work only with command include '-d' option.|
+| mongo | C:\Program Files\MongoDB\Tools\100\bin\mongoexport.exe | Y | 'mongoexport'路径 |
+| host | 127.0.0.1 | Y | MongoDB数据库 Host |
+| port | 27017 | Y | MongoDB数据库 端口 |
+| username | test | N | MongoDB数据库 用户名，如没有密码则保持为空 |
+| password | test | N | MongoDB数据库 密码，如没有密码则保持为空 |
+| target | 'must bean array' | Y | 需要导出的目标数据库和集合信息 |
+| db | 'must be an object' | Y | 需要导出的目标数据库 |
+| collection | 'must be an array' | Y | 需要导出的目标集合 |
+| prefix | mongodb-local-backup | N | 导出保存文件的前缀 |
+| type | json/csv | Y | 导出文件格式 |
+| output | E:\mongo_backup\ | Y | 导出文件位置 |
+| cron | */1 * * * * | N | 定时任务配置, 仅在启用 '-d' 后运行 |
 
-#### 1.3 config file example
+#### 1.3 配置文件示例
 
 <a id="config_json" href="#">config.json</a>
 
@@ -112,64 +112,63 @@ output: "E:\\mongo_backup\\"
 cron: '*/1 * * * *'
 ```
 
-### 2. Run command
+### 2. 运行命令
 
-#### 2.1 Run in Windows
+#### 2.1 Windows平台
 
 ```cmd
-# one time
+# 仅运行一次
 ./mlb.exe -c config.json -f json
 ./mlb.exe -c config.toml -f toml
 ./mlb.exe -c config.yml -f yaml
 ./mlb.exe -c config.yaml -f yaml
 
-# cron job
+# 定时任务
 ./mlb.exe -c config.json -f json -d
 ./mlb.exe -c config.toml -f toml -d
 ./mlb.exe -c config.yml -f yaml -d
 ./mlb.exe -c config.yaml -f yaml -d
 ```
 
-#### 2.2 Run in Linux/Darwin
+#### 2.2 Linux/Darwin 平台
 
 ```bash
-# one time
+# 仅运行一次
 mlb -c config.json -f json
 mlb -c config.toml -f toml
 mlb -c config.yml -f yaml
 mlb -c config.yaml -f yaml
 
-# cron job
+# 定时任务
 mlb -c config.json -f json -d
 mlb -c config.toml -f toml -d
 mlb -c config.yml -f yaml -d
 mlb -c config.yaml -f yaml -d
 ```
 
-## Feature plans
+## 开发计划
 
 ### 1. Service
 
-The service is about the `Service` in `Windows`, `Linux` and `MacOS`. With the `Service`, `mlb` can run in background
-and do the backup tasks automatically.
+目标是 `mlb` 能够作为服务运行在 `Windows`, `Linux` and `MacOS`. 作为 `Service`, `mlb` 能够后台运行，并且根据配置自动备份数据。
 
-### 2. Notification
+### 2. 消息推送
 
-Aim to send message to IM software such as `Telegram`,`Bark`, `WXWorks`, `DingTalk` and so on.
+能够使用系列的应用推送消息 `Telegram`,`Bark`, `WXWorks`, `DingTalk` .
 
-## Contribution
+## 代码贡献
 
-If you have some great ideas, plz submit issue and let me know :D
+如果你有更好的想法，欢迎提出issue
 
+更欢迎大家能够多提PR~
 Welcome to PR~
 
-## Background
+## 背景
 
-Why did I design this tool? A few months before, the data in MongoDB Standalone is broken by the hard disk failure, so I
-lost my data and can't not backup. So if you want to keep your data safe, it's better to use MongoDB ReplicaSet or
-backup more often.
+之所以想做这样工具主要是满足自己的日常需求。几个月前，自己电脑中的MongoDB数据库突然就不能启动，也想官方咨询过，数据恢复无望。
+考虑到当时上面的数据也没什么重要资料，后面就开始研究这样一个工具来完成自动备份的工作。
 
-## Thanks
+## 致谢
 
 1. [github.com/BurntSushi/toml](https://github.com/BurntSushi/toml) MIT Licence
 2. [github.com/alexflint/go-arg](https://github.com/alexflint/go-arg) BSD-2-Clause License
