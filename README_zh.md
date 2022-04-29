@@ -16,6 +16,8 @@
 
 一款易用的MongoDB本地备份工具。
 
+[English](https://github.com/catfishlty/mongodb-local-backup#readme), 中文
+
 ## 使用指南
 
 ### 1. 配置文件

@@ -16,6 +16,8 @@
 
 A tool can back up your MongoDB data in Local File system.
 
+English, [中文](https://github.com/catfishlty/mongodb-local-backup/blob/master/README_zh.md)
+
 ## Usage
 
 ### 1. define config file
