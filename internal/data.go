@@ -13,8 +13,8 @@ const (
 
 // BaseCmd base command struct
 type BaseCmd struct {
-	Config string `arg:"-c,--config,required" help:"config file"`
-	Format string `arg:"-f,--format,required" help:"config file format(json, yaml, toml)"`
+	Config string `arg:"-c,--config" help:"config file"`
+	Format string `arg:"-f,--format" help:"config file format(json, yaml, toml)"`
 	Daemon bool   `arg:"-d,--daemon" help:"non stop running"`
 }
 
