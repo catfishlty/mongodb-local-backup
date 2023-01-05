@@ -15,7 +15,7 @@ func TestCheckArgs(t *testing.T) {
 			args := Args{
 				StartCmd: nil,
 			}
-			So(CheckArgs(args), ShouldBeNil)
+			So(CheckArgs(nil, args), ShouldBeNil)
 		})
 		Convey("test2", func() {
 			args := Args{
@@ -23,7 +23,7 @@ func TestCheckArgs(t *testing.T) {
 					Format: "json",
 				},
 			}
-			So(CheckArgs(args), ShouldBeNil)
+			So(CheckArgs(nil, args), ShouldBeNil)
 		})
 		Convey("test3", func() {
 			args := Args{
@@ -31,7 +31,7 @@ func TestCheckArgs(t *testing.T) {
 					Format: "xxx",
 				},
 			}
-			So(CheckArgs(args), ShouldBeError)
+			So(CheckArgs(nil, args), ShouldBeError)
 		})
 	})
 }

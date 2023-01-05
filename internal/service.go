@@ -80,7 +80,7 @@ func Run(conf *Config) error {
 
 // RunInDaemon execute app with the config by cron, and stop until shutdown the app
 func RunInDaemon(conf *Config) error {
-	initLogger(getLogPath(conf.Log))
+	initLogger(conf.Log)
 	s := gocron.NewScheduler(time.Now().Location())
 	_, err := s.Cron(conf.Cron).Do(func() {
 		runErr := Run(conf)
@@ -146,13 +146,6 @@ func GenBackupFilename(prefix, db, collection, postfix string) string {
 		p = "mongodb-local-backup"
 	}
 	return fmt.Sprintf("%s-%s-%s-%s.%s", p, db, collection, time.Now().Format("20060102150405999-07MST"), postfix)
-}
-
-func getLogPath(logPath string) string {
-	if logPath == "" {
-		return "mongodb-local-backup.log"
-	}
-	return logPath
 }
 
 func initLogger(logFile string) {

@@ -60,40 +60,42 @@ func ReadConfig(file, format string) (*Config, error) {
 	if err != nil {
 		return nil, err
 	}
+	config := &Config{
+		Type:   "json",
+		Prefix: "mongodb-local-backup",
+		Log:    "mongodb-local-backup.log",
+	}
 	switch format {
 	case "json":
-		return ReadJson(b)
+		return ReadJson(config, b)
 	case "yaml":
-		return ReadYaml(b)
+		return ReadYaml(config, b)
 	case "toml":
-		return ReadToml(b)
+		return ReadToml(config, b)
 	}
 	return nil, errors.New("unsupported config file format")
 }
 
-func ReadJson(b []byte) (*Config, error) {
-	var config Config
-	err := json.Unmarshal(b, &config)
+func ReadJson(config *Config, b []byte) (*Config, error) {
+	err := json.Unmarshal(b, config)
 	if err != nil {
 		return nil, err
 	}
-	return &config, nil
+	return config, nil
 }
 
-func ReadYaml(b []byte) (*Config, error) {
-	var config Config
-	err := yaml.Unmarshal(b, &config)
+func ReadYaml(config *Config, b []byte) (*Config, error) {
+	err := yaml.Unmarshal(b, config)
 	if err != nil {
 		return nil, err
 	}
-	return &config, nil
+	return config, nil
 }
 
-func ReadToml(b []byte) (*Config, error) {
-	var config Config
-	err := toml.Unmarshal(b, &config)
+func ReadToml(config *Config, b []byte) (*Config, error) {
+	err := toml.Unmarshal(b, config)
 	if err != nil {
 		return nil, err
 	}
-	return &config, nil
+	return config, nil
 }

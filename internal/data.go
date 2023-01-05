@@ -13,9 +13,10 @@ const (
 
 // BaseCmd base command struct
 type BaseCmd struct {
-	Config string `arg:"-c,--config" help:"config file"`
-	Format string `arg:"-f,--format" help:"config file format(json, yaml, toml)"`
-	Daemon bool   `arg:"-d,--daemon" help:"non stop running"`
+	Config   string `arg:"-c,--config" help:"config file"`
+	Format   string `arg:"-f,--format" help:"config file format(json, yaml, toml)"`
+	Daemon   bool   `arg:"-d,--daemon" help:"non stop running"`
+	LogLevel string `arg:"-l,--log" default:"info" help:"log level(debug, info, warn, error, fatal, panic)"`
 }
 
 // Args all commands struct

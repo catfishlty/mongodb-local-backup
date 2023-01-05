@@ -12,27 +12,24 @@ import (
 func main() {
 	var args internal.Args
 	p := arg.MustParse(&args)
-	err := internal.CheckArgs(args)
-	if err != nil {
-		p.Fail(err.Error())
-		return
-	}
-
+	internal.CheckArgs(p, args)
 	switch {
 	case args.StartCmd != nil:
-		setLogLevel(p, args.StartCmd.LogLevel)
 		log.Debugf("command: Start")
+		setLogLevel(p, args.StartCmd.LogLevel)
 		conf := getEnvConfig(p, args.StartCmd.Daemon)
 		if conf == nil {
-			conf = getFileConfig(args.StartCmd.Config, args.StartCmd.Format, p, args.StartCmd.Daemon)
+			conf = getFileConfig(p, args.StartCmd.Config, args.StartCmd.Format, args.StartCmd.Daemon)
 		}
 		if conf == nil {
 			p.Fail("missing config env variables or missing config file")
 			return
 		}
 		if args.StartCmd.Daemon {
+			log.Debugf("Start Daemon")
 			exec(conf, p, internal.RunInDaemon)
 		} else {
+			log.Debugf("Start Once")
 			exec(conf, p, internal.Run)
 		}
 	default:
@@ -94,7 +91,7 @@ func getTargetConfig(configStr string) []internal.MongoTarget {
 	return target
 }
 
-func getFileConfig(file, format string, p *arg.Parser, checkCron bool) *internal.Config {
+func getFileConfig(p *arg.Parser, file, format string, checkCron bool) *internal.Config {
 	conf, err := internal.ReadConfig(file, format)
 	if err != nil {
 		p.Fail(err.Error())
