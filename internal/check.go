@@ -15,17 +15,22 @@ import (
 	"strings"
 )
 
-// CheckArgs check arguments are valid or not
-func CheckArgs(p *arg.Parser, args Args) {
-	switch {
-	case args.StartCmd != nil:
+// CheckArgsConfigFormat check config format is valid
+func CheckArgsConfigFormat(p *arg.Parser, args Args) {
+	if args.StartCmd != nil {
 		if !slices.Contains([]string{"json", "yaml", "toml"}, args.StartCmd.Format) {
 			errMsg := fmt.Sprintf("config file format '%s' is unsupported", args.StartCmd.Format)
 			p.Fail(errMsg)
 			log.Errorln(errMsg)
 			os.Exit(1)
 		}
-		if !slices.Contains([]string{"panic", "fatal", "error", "warn", "warning", "info", "debug", "trace"}, args.StartCmd.Format) {
+	}
+}
+
+// CheckArgsLogLevel check log level is valid
+func CheckArgsLogLevel(p *arg.Parser, args Args) {
+	if args.StartCmd != nil {
+		if !slices.Contains([]string{"panic", "fatal", "error", "warn", "warning", "info", "debug", "trace"}, args.StartCmd.LogLevel) {
 			errMsg := fmt.Sprintf("log level '%s' is unsupported", args.StartCmd.LogLevel)
 			p.Fail(errMsg)
 			log.Errorln(errMsg)

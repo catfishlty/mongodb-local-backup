@@ -11,12 +11,13 @@ WORKDIR /app
 RUN apk add --no-cache mongodb-tools
 COPY --from=builder /app/mlb /app/mlb
 ENV MLB_MONGOEXPORT = "/usr/bin/mongoexport"
-ENV MLB_HOST = ""
-ENV MLB_PORT = ""
-ENV MLB_USERNAME = ""
-ENV MLB_PASSWORD = ""
-ENV MLB_CRON = ""
-ENV MLB_TARGET = "json"
+ENV MLB_TYPE = "json"
 ENV MLB_OUTPUT = "/data"
 ENV MLB_LOG = "info"
-ENTRYPOINT ["/app/mlb", "start", "-d", "--log", "${MLB_LOG}"]
+#ENV MLB_HOST = ""
+#ENV MLB_PORT = ""
+#ENV MLB_USERNAME = ""
+#ENV MLB_PASSWORD = ""
+#ENV MLB_TARGET=""
+#ENV MLB_CRON = ""
+ENTRYPOINT /app/mlb start -d --log $MLB_LOG

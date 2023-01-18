@@ -12,13 +12,16 @@ import (
 func main() {
 	var args internal.Args
 	p := arg.MustParse(&args)
-	internal.CheckArgs(p, args)
 	switch {
 	case args.StartCmd != nil:
 		log.Debugf("command: Start")
+		internal.CheckArgsLogLevel(p, args)
 		setLogLevel(p, args.StartCmd.LogLevel)
-		conf := getEnvConfig(p, args.StartCmd.Daemon)
-		if conf == nil {
+		var conf *internal.Config
+		if args.StartCmd.Config == "" || args.StartCmd.Format == "" {
+			conf = getEnvConfig(p, args.StartCmd.Daemon)
+		} else {
+			internal.CheckArgsConfigFormat(p, args)
 			conf = getFileConfig(p, args.StartCmd.Config, args.StartCmd.Format, args.StartCmd.Daemon)
 		}
 		if conf == nil {
@@ -94,13 +97,15 @@ func getTargetConfig(configStr string) []internal.MongoTarget {
 func getFileConfig(p *arg.Parser, file, format string, checkCron bool) *internal.Config {
 	conf, err := internal.ReadConfig(file, format)
 	if err != nil {
+		log.Errorf(err.Error())
 		p.Fail(err.Error())
 		return nil
 	}
 	err = internal.CheckConfig(conf, checkCron)
 	if err != nil {
+		log.Errorf(err.Error())
 		p.Fail(err.Error())
-
+		os.Exit(1)
 	}
 	return conf
 }

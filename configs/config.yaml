@@ -2,10 +2,14 @@ mongo: "C:\\Program Files\\MongoDB\\Tools\\100\\bin\\mongoexport.exe"
 host: 127.0.0.1
 port: 27017
 target:
-  - db: test
+  - db: test1
     collection:
-      - test
-      - test1
+      - c1
+      - c2
+  - db: test2
+    collection:
+      - c3
+      - c4
 prefix: "mongodb-local-backup-yaml"
 type: json
 output: "E:\\mongo_backup\\"
