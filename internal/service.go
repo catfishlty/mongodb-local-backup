@@ -32,12 +32,11 @@ func Run(conf *Config) error {
 	mongoSplitIdx := strings.LastIndex(conf.Mongo, string(os.PathSeparator))
 	tempFile := GenTempFile(conf.Type)
 	targets := conf.Target
-	args := getArgs(conf)
-	for i := 0; i < len(targets); i++ {
-		tempArgs := append(args, "--out "+tempFile)
-		for j := 0; j < len(targets[i].Collection); j++ {
-			db := targets[i].Db
-			collection := targets[i].Collection[j]
+	for _, target := range targets {
+		for _, collection := range target.Collection {
+			args := getArgs(conf)
+			tempArgs := append(args, "--out "+tempFile)
+			db := target.Db
 			tempArgs = targetInject(tempArgs, db, collection)
 			c := cmd.NewCommand(fmt.Sprintf("%s %s", conf.Mongo[mongoSplitIdx+1:], strings.Join(tempArgs, " ")), cmd.WithWorkingDir(conf.Mongo[:mongoSplitIdx]), cmd.WithEnvironmentVariables(cmd.EnvVars{"encoding": "utf-8"}))
 			log.Debugf("mongo command: %s", c.Command)
@@ -145,7 +144,7 @@ func GenBackupFilename(prefix, db, collection, postfix string) string {
 	} else {
 		p = "mongodb-local-backup"
 	}
-	return fmt.Sprintf("%s-%s-%s-%s.%s", p, db, collection, time.Now().Format("20060102150405999-07MST"), postfix)
+	return fmt.Sprintf("%s-%s-%s-%s.%s", p, db, collection, time.Now().Format("20060102150405-07MST"), postfix)
 }
 
 func initLogger(logFile string) {

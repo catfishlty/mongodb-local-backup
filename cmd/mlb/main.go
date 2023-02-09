@@ -70,14 +70,19 @@ func getEnvConfig(p *arg.Parser, daemon bool) *internal.Config {
 	}
 	err = internal.CheckConfig(conf, daemon)
 	if err != nil {
-		return nil
+		p.Fail(err.Error())
+		log.Errorln(err.Error())
+		os.Exit(1)
+	}
+	if len(conf.Output)-1 != strings.LastIndex(conf.Output, "/") {
+		conf.Output = conf.Output + "/"
 	}
 	return conf
 }
 
 func getTargetConfig(configStr string) []internal.MongoTarget {
 	target := make([]internal.MongoTarget, 0)
-	dbColStrList := strings.Split(configStr, ";")
+	dbColStrList := strings.Split(configStr, "&")
 	for _, dbColStr := range dbColStrList {
 		dbCol := strings.Split(dbColStr, "@")
 		if len(dbCol) == 1 {

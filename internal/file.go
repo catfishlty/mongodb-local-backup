@@ -43,7 +43,7 @@ func FileTrans(sourcePath, targetPath string) error {
 	if err != nil {
 		return err
 	}
-	err = ioutil.WriteFile(targetPath, b, 0777)
+	err = ioutil.WriteFile(targetPath, b, 0755)
 	if err != nil {
 		return err
 	}
