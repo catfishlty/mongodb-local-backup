@@ -63,7 +63,6 @@ func ReadConfig(file, format string) (*Config, error) {
 	config := &Config{
 		Type:   "json",
 		Prefix: "mongodb-local-backup",
-		Log:    "mongodb-local-backup.log",
 	}
 	switch format {
 	case "json":

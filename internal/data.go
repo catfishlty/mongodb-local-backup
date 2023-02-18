@@ -42,5 +42,4 @@ type Config struct {
 	Output   string        `json:"output,omitempty" yaml:"output,omitempty" help:"specific a path to store backup files"`
 	Cron     string        `json:"cron,omitempty" yaml:"cron,omitempty" help:"CRON expression"`
 	Prefix   string        `json:"prefix,omitempty" yaml:"prefix,omitempty" help:"backup file prefix"`
-	Log      string        `json:"log,omitempty" yaml:"log,omitempty" help:"log file path"`
 }

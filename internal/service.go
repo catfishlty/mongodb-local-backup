@@ -79,7 +79,6 @@ func Run(conf *Config) error {
 
 // RunInDaemon execute app with the config by cron, and stop until shutdown the app
 func RunInDaemon(conf *Config) error {
-	initLogger(conf.Log)
 	s := gocron.NewScheduler(time.Now().Location())
 	_, err := s.Cron(conf.Cron).Do(func() {
 		runErr := Run(conf)
@@ -92,13 +91,11 @@ func RunInDaemon(conf *Config) error {
 		log.Errorf("add cron job fail: %s", err.Error())
 		return err
 	}
-	log.Infof("mongodb-local-backup[daemon] start")
 	s.StartAsync()
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Interrupt, os.Kill, syscall.SIGHUP, syscall.SIGTERM, syscall.SIGQUIT)
 	<-quit
 	s.Stop()
-	log.Infof("mongodb-local-backup[daemon] stop")
 	return nil
 }
 
@@ -145,13 +142,4 @@ func GenBackupFilename(prefix, db, collection, postfix string) string {
 		p = "mongodb-local-backup"
 	}
 	return fmt.Sprintf("%s-%s-%s-%s.%s", p, db, collection, time.Now().Format("20060102150405-07MST"), postfix)
-}
-
-func initLogger(logFile string) {
-	f, err := os.OpenFile(logFile, os.O_CREATE|os.O_APPEND, os.ModeAppend|os.ModePerm)
-	if err != nil {
-		log.Errorf("log file path error[%s]: %s", logFile, err.Error())
-		return
-	}
-	log.SetOutput(f)
 }

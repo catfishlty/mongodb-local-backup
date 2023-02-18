@@ -4,20 +4,16 @@ WORKDIR /app
 ADD . ./
 RUN go env -w GOPROXY=https://goproxy.io,direct
 RUN go build -v -o mlb cmd/mlb/main.go
+RUN apk add --no-cache mongodb-tools
 
 FROM alpine
 MAINTAINER "catfishlty"
 WORKDIR /app
-RUN apk add --no-cache mongodb-tools
 COPY --from=builder /app/mlb /app/mlb
-ENV MLB_MONGOEXPORT = "/usr/bin/mongoexport"
-ENV MLB_TYPE = "json"
-ENV MLB_OUTPUT = "/data"
-ENV MLB_LOG = "info"
-#ENV MLB_HOST = ""
-#ENV MLB_PORT = ""
-#ENV MLB_USERNAME = ""
-#ENV MLB_PASSWORD = ""
-#ENV MLB_TARGET=""
-#ENV MLB_CRON = ""
-ENTRYPOINT /app/mlb start -d --log $MLB_LOG
+COPY --from=builder /usr/bin/mongoexport /usr/bin/mongoexport
+ENV MLB_MONGOEXPORT "/usr/bin/mongoexport"
+ENV MLB_TYPE json
+ENV MLB_OUTPUT /mlb/backup
+ENV MLB_LOG_LEVEL info
+RUN mkdir -p $MLB_OUTPUT
+ENTRYPOINT /app/mlb start -d --log $MLB_LOG_LEVEL

@@ -66,7 +66,6 @@ func getEnvConfig(p *arg.Parser, daemon bool) *internal.Config {
 		Output:   os.Getenv(internal.MlbOutput),
 		Cron:     os.Getenv(internal.MlbCron),
 		Prefix:   os.Getenv(internal.MlbPrefix),
-		Log:      os.Getenv(internal.MlbLog),
 	}
 	err = internal.CheckConfig(conf, daemon)
 	if err != nil {
