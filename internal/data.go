@@ -13,9 +13,10 @@ const (
 
 // BaseCmd base command struct
 type BaseCmd struct {
-	Config string `arg:"-c,--config,required" help:"config file"`
-	Format string `arg:"-f,--format,required" help:"config file format(json, yaml, toml)"`
-	Daemon bool   `arg:"-d,--daemon" help:"non stop running"`
+	Config   string `arg:"-c,--config" help:"config file"`
+	Format   string `arg:"-f,--format" help:"config file format(json, yaml, toml)"`
+	Daemon   bool   `arg:"-d,--daemon" help:"non stop running"`
+	LogLevel string `arg:"-l,--log" default:"info" help:"log level(debug, info, warn, error, fatal, panic)"`
 }
 
 // Args all commands struct
@@ -41,5 +42,4 @@ type Config struct {
 	Output   string        `json:"output,omitempty" yaml:"output,omitempty" help:"specific a path to store backup files"`
 	Cron     string        `json:"cron,omitempty" yaml:"cron,omitempty" help:"CRON expression"`
 	Prefix   string        `json:"prefix,omitempty" yaml:"prefix,omitempty" help:"backup file prefix"`
-	Log      string        `json:"log,omitempty" yaml:"log,omitempty" help:"log file path"`
 }

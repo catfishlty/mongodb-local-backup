@@ -32,12 +32,11 @@ func Run(conf *Config) error {
 	mongoSplitIdx := strings.LastIndex(conf.Mongo, string(os.PathSeparator))
 	tempFile := GenTempFile(conf.Type)
 	targets := conf.Target
-	args := getArgs(conf)
-	for i := 0; i < len(targets); i++ {
-		tempArgs := append(args, "--out "+tempFile)
-		for j := 0; j < len(targets[i].Collection); j++ {
-			db := targets[i].Db
-			collection := targets[i].Collection[j]
+	for _, target := range targets {
+		for _, collection := range target.Collection {
+			args := getArgs(conf)
+			tempArgs := append(args, "--out "+tempFile)
+			db := target.Db
 			tempArgs = targetInject(tempArgs, db, collection)
 			c := cmd.NewCommand(fmt.Sprintf("%s %s", conf.Mongo[mongoSplitIdx+1:], strings.Join(tempArgs, " ")), cmd.WithWorkingDir(conf.Mongo[:mongoSplitIdx]), cmd.WithEnvironmentVariables(cmd.EnvVars{"encoding": "utf-8"}))
 			log.Debugf("mongo command: %s", c.Command)
@@ -80,7 +79,6 @@ func Run(conf *Config) error {
 
 // RunInDaemon execute app with the config by cron, and stop until shutdown the app
 func RunInDaemon(conf *Config) error {
-	initLogger(getLogPath(conf.Log))
 	s := gocron.NewScheduler(time.Now().Location())
 	_, err := s.Cron(conf.Cron).Do(func() {
 		runErr := Run(conf)
@@ -93,13 +91,11 @@ func RunInDaemon(conf *Config) error {
 		log.Errorf("add cron job fail: %s", err.Error())
 		return err
 	}
-	log.Infof("mongodb-local-backup[daemon] start")
 	s.StartAsync()
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Interrupt, os.Kill, syscall.SIGHUP, syscall.SIGTERM, syscall.SIGQUIT)
 	<-quit
 	s.Stop()
-	log.Infof("mongodb-local-backup[daemon] stop")
 	return nil
 }
 
@@ -145,21 +141,5 @@ func GenBackupFilename(prefix, db, collection, postfix string) string {
 	} else {
 		p = "mongodb-local-backup"
 	}
-	return fmt.Sprintf("%s-%s-%s-%s.%s", p, db, collection, time.Now().Format("20060102150405999-07MST"), postfix)
-}
-
-func getLogPath(logPath string) string {
-	if logPath == "" {
-		return "mongodb-local-backup.log"
-	}
-	return logPath
-}
-
-func initLogger(logFile string) {
-	f, err := os.OpenFile(logFile, os.O_CREATE|os.O_APPEND, os.ModeAppend|os.ModePerm)
-	if err != nil {
-		log.Errorf("log file path error[%s]: %s", logFile, err.Error())
-		return
-	}
-	log.SetOutput(f)
+	return fmt.Sprintf("%s-%s-%s-%s.%s", p, db, collection, time.Now().Format("20060102150405-07MST"), postfix)
 }

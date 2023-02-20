@@ -27,8 +27,8 @@ func TestArgs_Version(t *testing.T) {
 
 func TestGenTempFile(t *testing.T) {
 	Convey("TestGetTempFile", t, func() {
-		So(GenTempFile("json"), ShouldEqual, TempDir+BackupFileName+".json")
-		So(GenTempFile("csv"), ShouldEqual, TempDir+BackupFileName+".csv")
+		So(GenTempFile("json", ""), ShouldEqual, TempDir+BackupFileName+".json")
+		So(GenTempFile("csv", ""), ShouldEqual, TempDir+BackupFileName+".csv")
 	})
 }
 
