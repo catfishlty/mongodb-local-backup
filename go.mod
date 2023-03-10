@@ -14,7 +14,7 @@ require (
 	github.com/sirupsen/logrus v1.8.1
 	github.com/smartystreets/goconvey v1.7.2
 	golang.org/x/exp v0.0.0-20230321023759-10a507213a29
-	golang.org/x/text v0.3.7
+	golang.org/x/text v0.3.8
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 	gopl.io v0.0.0-20211004154805-1ae3ec64947b
 )
