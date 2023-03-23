@@ -27,8 +27,8 @@ func TestArgs_Version(t *testing.T) {
 
 func TestGenTempFile(t *testing.T) {
 	Convey("TestGetTempFile", t, func() {
-		So(GenTempFile("json", ""), ShouldEqual, TempDir+BackupFileName+".json")
-		So(GenTempFile("csv", ""), ShouldEqual, TempDir+BackupFileName+".csv")
+		So(GenTempFile("json"), ShouldEqual, TempDir+BackupFileName+".json")
+		So(GenTempFile("csv"), ShouldEqual, TempDir+BackupFileName+".csv")
 	})
 }
 
@@ -86,7 +86,6 @@ func getConfig() *Config {
 		Output: "mlb",
 		Cron:   "*/1 * * * *",
 		Prefix: "mlb",
-		Log:    "mlb-log",
 	}
 }
 
@@ -166,7 +165,6 @@ func TestRunInDaemon(t *testing.T) {
 		})
 		Convey("test2", func() {
 			confDup := getConfig()
-			confDup.Log = ""
 			patches := ApplyFunc(os.OpenFile, func(string, int, fs.FileMode) (*os.File, error) {
 				return nil, fake.ErrActual
 			})

@@ -9,33 +9,6 @@ import (
 	"testing"
 )
 
-func TestCheckArgs(t *testing.T) {
-	Convey("TestCheckArgs", t, func() {
-		Convey("test1", func() {
-			args := Args{
-				StartCmd: nil,
-			}
-			So(CheckArgs(nil, args), ShouldBeNil)
-		})
-		Convey("test2", func() {
-			args := Args{
-				StartCmd: &BaseCmd{
-					Format: "json",
-				},
-			}
-			So(CheckArgs(nil, args), ShouldBeNil)
-		})
-		Convey("test3", func() {
-			args := Args{
-				StartCmd: &BaseCmd{
-					Format: "xxx",
-				},
-			}
-			So(CheckArgs(nil, args), ShouldBeError)
-		})
-	})
-}
-
 func TestValidFilePath(t *testing.T) {
 	Convey("TestValidFilePath", t, func() {
 		Convey("test1", func() {
@@ -193,7 +166,6 @@ func TestCheckConfig(t *testing.T) {
 		Output: "/root/output",
 		Cron:   "*/1 * * * *",
 		Prefix: "mongo-local-backup",
-		Log:    "/root/logs",
 	}
 	Convey("TestCheckConfig", t, func() {
 		Convey("test1", func() {
