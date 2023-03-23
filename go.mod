@@ -1,6 +1,6 @@
 module github.com/catfishlty/mongodb-local-backup
 
-go 1.18
+go 1.20
 
 require (
 	github.com/BurntSushi/toml v1.0.0
