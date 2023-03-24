@@ -4,34 +4,107 @@ import (
 	"errors"
 	. "github.com/agiledragon/gomonkey/v2"
 	"github.com/agiledragon/gomonkey/v2/test/fake"
+	"github.com/alexflint/go-arg"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	. "github.com/smartystreets/goconvey/convey"
+	"os"
 	"testing"
 )
 
-func TestCheckArgs(t *testing.T) {
-	Convey("TestCheckArgs", t, func() {
+func TestCheckArgsConfigFormat(t *testing.T) {
+	Convey("TestCheckArgsConfigFormat", t, func() {
 		Convey("test1", func() {
+			num := 0
+			patches := ApplyFunc((*arg.Parser).Fail, func(*arg.Parser, string) {
+				num++
+			})
+			defer patches.Reset()
 			args := Args{
 				StartCmd: nil,
 			}
-			So(CheckArgs(args), ShouldBeNil)
+			CheckArgsConfigFormat(nil, args)
+			So(num, ShouldEqual, 0)
 		})
 		Convey("test2", func() {
+			num := 0
+			patches := ApplyFunc((*arg.Parser).Fail, func(*arg.Parser, string) {
+				num++
+			})
+			defer patches.Reset()
 			args := Args{
 				StartCmd: &BaseCmd{
 					Format: "json",
 				},
 			}
-			So(CheckArgs(args), ShouldBeNil)
+			CheckArgsConfigFormat(nil, args)
+			So(num, ShouldEqual, 0)
 		})
 		Convey("test3", func() {
+			num := 0
+			patch1 := ApplyFunc((*arg.Parser).Fail, func(*arg.Parser, string) {
+				num++
+			})
+			defer patch1.Reset()
+			patch2 := ApplyFunc(os.Exit, func(int) {
+				num++
+			})
+			defer patch2.Reset()
 			args := Args{
 				StartCmd: &BaseCmd{
 					Format: "xxx",
 				},
 			}
-			So(CheckArgs(args), ShouldBeError)
+			CheckArgsConfigFormat(nil, args)
+			So(num, ShouldEqual, 2)
+		})
+	})
+}
+
+func TestCheckArgsLogLevel(t *testing.T) {
+	Convey("TestCheckArgsLogLevel", t, func() {
+		Convey("test1", func() {
+			num := 0
+			patches := ApplyFunc((*arg.Parser).Fail, func(*arg.Parser, string) {
+				num++
+			})
+			defer patches.Reset()
+			args := Args{
+				StartCmd: nil,
+			}
+			CheckArgsLogLevel(nil, args)
+			So(num, ShouldEqual, 0)
+		})
+		Convey("test2", func() {
+			num := 0
+			patches := ApplyFunc((*arg.Parser).Fail, func(*arg.Parser, string) {
+				num++
+			})
+			defer patches.Reset()
+			args := Args{
+				StartCmd: &BaseCmd{
+					LogLevel: "warn",
+				},
+			}
+			CheckArgsLogLevel(nil, args)
+			So(num, ShouldEqual, 0)
+		})
+		Convey("test3", func() {
+			num := 0
+			patch1 := ApplyFunc((*arg.Parser).Fail, func(*arg.Parser, string) {
+				num++
+			})
+			defer patch1.Reset()
+			patch2 := ApplyFunc(os.Exit, func(int) {
+				num++
+			})
+			defer patch2.Reset()
+			args := Args{
+				StartCmd: &BaseCmd{
+					LogLevel: "xxx",
+				},
+			}
+			CheckArgsLogLevel(nil, args)
+			So(num, ShouldEqual, 2)
 		})
 	})
 }
@@ -193,7 +266,6 @@ func TestCheckConfig(t *testing.T) {
 		Output: "/root/output",
 		Cron:   "*/1 * * * *",
 		Prefix: "mongo-local-backup",
-		Log:    "/root/logs",
 	}
 	Convey("TestCheckConfig", t, func() {
 		Convey("test1", func() {

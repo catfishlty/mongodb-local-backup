@@ -186,13 +186,13 @@ func TestReadConfig(t *testing.T) {
 			patches := ApplyFunc(ioutil.ReadFile, func(string) ([]byte, error) {
 				return nil, nil
 			})
-			patches.ApplyFunc(ReadJson, func([]byte) (*Config, error) {
+			patches.ApplyFunc(ReadJson, func(*Config, []byte) (*Config, error) {
 				return &Config{Type: "json"}, nil
 			})
-			patches.ApplyFunc(ReadYaml, func([]byte) (*Config, error) {
+			patches.ApplyFunc(ReadYaml, func(*Config, []byte) (*Config, error) {
 				return &Config{Type: "yaml"}, nil
 			})
-			patches.ApplyFunc(ReadToml, func([]byte) (*Config, error) {
+			patches.ApplyFunc(ReadToml, func(*Config, []byte) (*Config, error) {
 				return &Config{Type: "toml"}, nil
 			})
 			defer patches.Reset()
@@ -222,7 +222,8 @@ func TestReadJson(t *testing.T) {
 				return fake.ErrActual
 			})
 			defer patches.Reset()
-			c, err := ReadJson([]byte{})
+			config := &Config{}
+			c, err := ReadJson(config, []byte{})
 			So(err, ShouldBeError)
 			So(err, ShouldEqual, fake.ErrActual)
 			So(c, ShouldBeNil)
@@ -232,7 +233,8 @@ func TestReadJson(t *testing.T) {
 				return nil
 			})
 			defer patches.Reset()
-			c, err := ReadJson([]byte{})
+			config := &Config{}
+			c, err := ReadJson(config, []byte{})
 			So(err, ShouldBeNil)
 			So(c, ShouldBeNil)
 		})
@@ -245,7 +247,8 @@ func TestReadYaml(t *testing.T) {
 				return fake.ErrActual
 			})
 			defer patches.Reset()
-			c, err := ReadYaml([]byte{})
+			config := &Config{}
+			c, err := ReadYaml(config, []byte{})
 			So(err, ShouldBeError)
 			So(err, ShouldEqual, fake.ErrActual)
 			So(c, ShouldBeNil)
@@ -255,7 +258,8 @@ func TestReadYaml(t *testing.T) {
 				return nil
 			})
 			defer patches.Reset()
-			_, err := ReadYaml([]byte{})
+			config := &Config{}
+			_, err := ReadYaml(config, []byte{})
 			So(err, ShouldBeNil)
 		})
 	})
@@ -267,7 +271,8 @@ func TestReadToml(t *testing.T) {
 				return fake.ErrActual
 			})
 			defer patches.Reset()
-			c, err := ReadToml([]byte{})
+			config := &Config{}
+			c, err := ReadToml(config, []byte{})
 			So(err, ShouldBeError)
 			So(err, ShouldEqual, fake.ErrActual)
 			So(c, ShouldBeNil)
@@ -277,7 +282,8 @@ func TestReadToml(t *testing.T) {
 				return nil
 			})
 			defer patches.Reset()
-			_, err := ReadToml([]byte{})
+			config := &Config{}
+			_, err := ReadToml(config, []byte{})
 			So(err, ShouldBeNil)
 		})
 	})

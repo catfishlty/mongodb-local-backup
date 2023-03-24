@@ -3,28 +3,40 @@ package internal
 import (
 	"errors"
 	"fmt"
+	"github.com/alexflint/go-arg"
 	"github.com/asaskevich/govalidator"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
 	"github.com/gorhill/cronexpr"
+	log "github.com/sirupsen/logrus"
+	"golang.org/x/exp/slices"
+	"os"
 	"regexp"
 	"strings"
 )
 
-// CheckArgs check arguments are valid or not
-func CheckArgs(args Args) error {
-	m := map[string]bool{
-		"json": true,
-		"yaml": true,
-		"toml": true,
-	}
-	switch {
-	case args.StartCmd != nil:
-		if !m[args.StartCmd.Format] {
-			return errors.New("config file format '" + args.StartCmd.Format + "' is unsupported")
+// CheckArgsConfigFormat check config format is valid
+func CheckArgsConfigFormat(p *arg.Parser, args Args) {
+	if args.StartCmd != nil {
+		if !slices.Contains([]string{"json", "yaml", "toml"}, args.StartCmd.Format) {
+			errMsg := fmt.Sprintf("config file format '%s' is unsupported", args.StartCmd.Format)
+			p.Fail(errMsg)
+			log.Errorln(errMsg)
+			os.Exit(1)
 		}
 	}
-	return nil
+}
+
+// CheckArgsLogLevel check log level is valid
+func CheckArgsLogLevel(p *arg.Parser, args Args) {
+	if args.StartCmd != nil {
+		if !slices.Contains([]string{"panic", "fatal", "error", "warn", "warning", "info", "debug", "trace"}, args.StartCmd.LogLevel) {
+			errMsg := fmt.Sprintf("log level '%s' is unsupported", args.StartCmd.LogLevel)
+			p.Fail(errMsg)
+			log.Errorln(errMsg)
+			os.Exit(1)
+		}
+	}
 }
 
 // ValidFilePath custom validator to validate filepath for ozzo-validation
