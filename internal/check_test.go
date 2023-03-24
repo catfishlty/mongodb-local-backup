@@ -4,10 +4,110 @@ import (
 	"errors"
 	. "github.com/agiledragon/gomonkey/v2"
 	"github.com/agiledragon/gomonkey/v2/test/fake"
+	"github.com/alexflint/go-arg"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	. "github.com/smartystreets/goconvey/convey"
+	"os"
 	"testing"
 )
+
+func TestCheckArgsConfigFormat(t *testing.T) {
+	Convey("TestCheckArgsConfigFormat", t, func() {
+		Convey("test1", func() {
+			num := 0
+			patches := ApplyFunc((*arg.Parser).Fail, func(*arg.Parser, string) {
+				num++
+			})
+			defer patches.Reset()
+			args := Args{
+				StartCmd: nil,
+			}
+			CheckArgsConfigFormat(nil, args)
+			So(num, ShouldEqual, 0)
+		})
+		Convey("test2", func() {
+			num := 0
+			patches := ApplyFunc((*arg.Parser).Fail, func(*arg.Parser, string) {
+				num++
+			})
+			defer patches.Reset()
+			args := Args{
+				StartCmd: &BaseCmd{
+					Format: "json",
+				},
+			}
+			CheckArgsConfigFormat(nil, args)
+			So(num, ShouldEqual, 0)
+		})
+		Convey("test3", func() {
+			num := 0
+			patch1 := ApplyFunc((*arg.Parser).Fail, func(*arg.Parser, string) {
+				num++
+			})
+			defer patch1.Reset()
+			patch2 := ApplyFunc(os.Exit, func(int) {
+				num++
+			})
+			defer patch2.Reset()
+			args := Args{
+				StartCmd: &BaseCmd{
+					Format: "xxx",
+				},
+			}
+			CheckArgsConfigFormat(nil, args)
+			So(num, ShouldEqual, 2)
+		})
+	})
+}
+
+func TestCheckArgsLogLevel(t *testing.T) {
+	Convey("TestCheckArgsLogLevel", t, func() {
+		Convey("test1", func() {
+			num := 0
+			patches := ApplyFunc((*arg.Parser).Fail, func(*arg.Parser, string) {
+				num++
+			})
+			defer patches.Reset()
+			args := Args{
+				StartCmd: nil,
+			}
+			CheckArgsLogLevel(nil, args)
+			So(num, ShouldEqual, 0)
+		})
+		Convey("test2", func() {
+			num := 0
+			patches := ApplyFunc((*arg.Parser).Fail, func(*arg.Parser, string) {
+				num++
+			})
+			defer patches.Reset()
+			args := Args{
+				StartCmd: &BaseCmd{
+					LogLevel: "warn",
+				},
+			}
+			CheckArgsLogLevel(nil, args)
+			So(num, ShouldEqual, 0)
+		})
+		Convey("test3", func() {
+			num := 0
+			patch1 := ApplyFunc((*arg.Parser).Fail, func(*arg.Parser, string) {
+				num++
+			})
+			defer patch1.Reset()
+			patch2 := ApplyFunc(os.Exit, func(int) {
+				num++
+			})
+			defer patch2.Reset()
+			args := Args{
+				StartCmd: &BaseCmd{
+					LogLevel: "xxx",
+				},
+			}
+			CheckArgsLogLevel(nil, args)
+			So(num, ShouldEqual, 2)
+		})
+	})
+}
 
 func TestValidFilePath(t *testing.T) {
 	Convey("TestValidFilePath", t, func() {
