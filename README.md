@@ -183,3 +183,8 @@ backup more often.
 8. [github.com/sirupsen/logrus](https://github.com/sirupsen/logrus) MIT Licence
 9. [github.com/smartystreets/goconvey/convey](https://github.com/smartystreets/goconvey) [Licence](https://github.com/smartystreets/goconvey/blob/master/LICENSE.md)
 10. [github.com/agiledragon/gomonkey](https://github.com/agiledragon/gomonkey) MIT Licence
+
+## Special Thanks to JetBrains
+
+<a href="https://jb.gg/OpenSourceSupport"><img width="300" src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png" alt="JetBrains Logo (Main) logo."></a>
+<a href="https://jb.gg/OpenSourceSupport"><img width="300" src="https://resources.jetbrains.com/storage/products/company/brand/logos/GoLand_icon.png" alt="GoLand logo."></a>
